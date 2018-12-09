@@ -35,6 +35,11 @@ html
             $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
             $("#lblX1").text(' ');
           }});
+          $.ajax({url: '/api/gettermdepositstats', success: function(json){
+            $("#lockedwallet").text(json.nAddress);
+            $("#lockedtx").text(json.nTimeLockedTxs);
+            $("#lockedcoin").text(json.nTotalTimeLockedValue);
+          }});
         }
         $('.block-last-next').tooltip({
           animation: true,
@@ -82,14 +87,14 @@ html
     -  };
     .nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
       .container-fluid
-        .navbar-header
+        .navbar-header(style='float:left;')
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
             span.sr-only Toggle navigation
             span.icon-bar
             span.icon-bar
             span.icon-bar
           a.navbar-brand(href='/') #{settings.title}
-        .collapse.navbar-collapse(id='navbar-collapse')
+        .collapse.navbar-collapse(id='navbar-collapse' style='float:left;')
           ul.nav.navbar-nav
             li#home
               a.navbar-link(href='/') 
@@ -125,71 +130,79 @@ html
                 a.navbar-link(href='/info')
                   span.glyphicon.glyphicon-info-sign
                   span.menu-text #{settings.locale.menu_api}
+        .search(style='float:right;width:50%;margin-top:5px;')
+          form.form-inline(method='post', action='/search')
+            #index-search.form-group
+              input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
+              button.btn.btn-success(type='submit') #{settings.locale.ex_search_button}
+.col-md-12
+   .panel-body(style='margin-bottom:5px;')
     .col-md-12
       .row.text-center
-        .col-md-2.col-md-offset-1
+        .col-md-4
+          <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script> <div class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC"></div> 
+        .col-md-4
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
-              if settings.nethash_units == 'K'
-                strong #{settings.locale.network} (KH/s)
-              else if settings.nethash_units == 'M'
-                strong #{settings.locale.network} (MH/s)
-              else if settings.nethash_units == 'G'
-                strong #{settings.locale.network} (GH/s)
-              else if settings.nethash_units == 'T'
-                strong #{settings.locale.network} (TH/s)
-              else if settings.nethash_units == 'P'
-                strong #{settings.locale.network} (PH/s)
-              else if settings.nethash_units == 'H'
-                strong #{settings.locale.network} (H/s)
+              strong #{settings.locale.network}
             .panel-body
-              if settings.index.difficulty == 'Hybrid'
-               label#hashrate - 
-               <br>
-               label#lblX1  
-              else  
-               label#hashrate - 
-        .col-md-2
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                      if settings.nethash_units == 'K'
+                        span #{settings.locale.hashrate} (KH/s)
+                      else if settings.nethash_units == 'M'
+                        span #{settings.locale.hashrate} (MH/s)
+                      else if settings.nethash_units == 'G'
+                        span #{settings.locale.hashrate} (GH/s)
+                      else if settings.nethash_units == 'T'
+                        span #{settings.locale.hashrate} (TH/s)
+                      else if settings.nethash_units == 'P'
+                        span #{settings.locale.hashrate} (PH/s)
+                      else if settings.nethash_units == 'H'
+                        span #{settings.locale.hashrate} (H/s)
+                    td
+                      if settings.index.difficulty == 'Hybrid'
+                        span#hashrate -
+                        <br>
+                        span#lblX1
+                      else
+                        span#hashrate -
+                  tr
+                    td
+                      span #{settings.locale.difficulty}
+                    td
+                      span#difficulty -
+                  tr
+                    td
+                      span #{settings.locale.ex_supply}
+                    td
+                      span#supply -
+              <br />
+        .col-md-4
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
-              strong #{settings.locale.difficulty}
+              strong #{settings.locale.timelocked}
             .panel-body
-              if settings.index.difficulty == 'Hybrid'
-               label#difficulty -
-               <br>
-               label#difficultyHybrid -
-              else
-               label#difficulty -
-        .col-md-2.col-sm-12
-          img(src='#{settings.logo}', style='margin-top:-15px;height:128px;')
-        .col-md-2
-          .panel.panel-default.hidden-sm.hidden-xs
-            .panel-heading
-              strong #{settings.locale.ex_supply} (#{settings.symbol})
-            .panel-body
-              if settings.index.difficulty == 'Hybrid'
-               label#supply - 
-               <br>
-               label#lblX1
-              else
-               label#supply -  
-        .col-md-2
-          .panel.panel-default.hidden-sm.hidden-xs
-            .panel-heading
-              strong #{settings.markets.exchange} Price
-            .panel-body
-              if settings.index.difficulty == 'Hybrid'
-               label#lastPrice -
-               <br>
-               label#lblX1
-              else
-               label#lastPrice - 
-                 
-      .row.text-center(style='margin-top:10px;margin-bottom:20px;')
-        form.form-inline(method='post', action='/search')      
-          #index-search.form-group
-            input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
-            button.btn.btn-success(type='submit') #{settings.locale.ex_search_button}
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                        span #{settings.locale.wallets}
+                    td
+                        span#lockedwallet -
+                  tr
+                    td
+                      span #{settings.locale.transactions}
+                    td
+                      span#lockedtx -
+                  tr
+                    td
+                      span #{settings.locale.total_locked}
+                    td
+                      span#lockedcoin -
+              <br />
     block content
     .navbar.navbar-default.navbar-fixed-bottom.hidden-xs
       .col-md-4
@@ -221,6 +234,3 @@ html
       span.connections
         label#lblBlockcount.label.label-default -
         label#lblConnections.label.label-default -
-
-
-              

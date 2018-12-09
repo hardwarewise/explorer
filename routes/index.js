@@ -160,7 +160,6 @@ router.get('/richlist', function(req, res) {
         //console.log(richlist);
         if (richlist) {
           db.get_distribution(richlist, stats, function(distribution) {
-            //console.log(distribution);
             res.render('richlist', {
               active: 'richlist',
               balance: richlist.balance,
@@ -170,7 +169,8 @@ router.get('/richlist', function(req, res) {
               distb: distribution.t_26_50,
               distc: distribution.t_51_75,
               distd: distribution.t_76_100,
-              diste: distribution.t_101plus,
+              diste: distribution.t_101_200,
+			  distf: distribution.t_201plus,
               show_dist: settings.richlist.distribution,
               show_received: settings.richlist.received,
               show_balance: settings.richlist.balance,
