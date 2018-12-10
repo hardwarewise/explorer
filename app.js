@@ -106,6 +106,12 @@ app.use('/ext/connections', function(req,res){
   });
 });
 
+app.use('/ext/gettermdepositstats', function(req,res){
+  db.get_termdepositstats(function(termdepositstats){
+    res.send({"nAddress": termdepositstats[0].term_deposit_wallets, "nTimeLockedTxs": termdepositstats[0].term_deposit_txs, "nTotalTimeLockedValue": termdepositstats[0].term_deposit_total});
+  });
+});
+
 // locals
 app.set('title', settings.title);
 app.set('symbol', settings.symbol);

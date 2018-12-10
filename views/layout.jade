@@ -35,7 +35,7 @@ html
             $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
             $("#lblX1").text(' ');
           }});
-          $.ajax({url: '/api/gettermdepositstats', success: function(json){
+          $.ajax({url: '/ext/gettermdepositstats', success: function(json){
             $("#lockedwallet").text(json.nAddress);
             $("#lockedtx").text(json.nTimeLockedTxs);
             $("#lockedcoin").text(json.nTotalTimeLockedValue);
