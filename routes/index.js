@@ -1,4 +1,6 @@
 var express = require('express')
+  , fs = require("fs")
+  , jsonminify = require("jsonminify")
   , router = express.Router()
   , settings = require('../lib/settings')
   , locale = require('../lib/locale')
@@ -128,6 +130,35 @@ router.get('/', function(req, res) {
 
 router.get('/info', function(req, res) {
   res.render('info', { active: 'info', address: settings.address, hashes: settings.api });
+});
+
+router.get('/gettermdepositstats', function(req, res) {
+    var termdepositstatsFilename = "termdepositstats.json";
+	termdepositstatsFilename = "./" + termdepositstatsFilename;
+
+	var termdepositstatsStr;
+	try{
+		//read the settings sync
+		termdepositstatsStr = fs.readFileSync(termdepositstatsFilename).toString();
+	} catch(e){
+		console.warn('No stats file found. Continuing using defaults!');
+	}
+
+	var termdepositstats = {"nAddress": 0, "nTimeLockedTxs": 0, "nTotalTimeLockedValue": 0};
+	try {
+		if(termdepositstatsStr) {
+			termdepositstatsStr = jsonminify(termdepositstatsStr).replace(",]","]").replace(",}","}");
+			termdepositstats = JSON.parse(termdepositstatsStr);
+			res.send({ 	nAddress: termdepositstats.nAddress,
+					nTimeLockedTxs: termdepositstats.nTimeLockedTxs,
+					nTotalTimeLockedValue: termdepositstats.nTotalTimeLockedValue
+			});
+		}else{
+			res.send(termdepositstats);
+		}
+	}catch(e){
+		res.send(termdepositstats);
+	}
 });
 
 router.get('/markets/:market', function(req, res) {
