@@ -24,7 +24,6 @@ mongoose.connect(dbString, function(err) {
     console.log('Aborting');
     exit();
   } else {
-	console.log('no stats entry found, creating now..');
 	TermDepositStats.remove({}, function(err, obj){
 		if (err) throw err;
 		console.log(obj.result.n + " document(s) deleted");
