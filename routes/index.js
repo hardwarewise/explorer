@@ -151,7 +151,8 @@ router.get('/gettermdepositstats', function(req, res) {
 			termdepositstats = JSON.parse(termdepositstatsStr);
 			res.send({ 	nAddress: termdepositstats.nAddress,
 					nTimeLockedTxs: termdepositstats.nTimeLockedTxs,
-					nTotalTimeLockedValue: termdepositstats.nTotalTimeLockedValue
+					nTotalTimeLockedValue: termdepositstats.nTotalTimeLockedValue,
+					distribution: termdepositstats.distribution
 			});
 		}else{
 			res.send(termdepositstats);
