@@ -5,7 +5,8 @@ Modified for SUQA
 
 *** NOTE ***
 add this command to crontab:
-cd "HOME_explorer" && wget -O termdepositstats.json "http://127.0.0.1:3001/api/gettermdepositstats"
+
+    > cd "HOME_explorer" && wget -O termdepositstats.json "http://127.0.0.1:3001/api/gettermdepositstats"
 
 
 An open source block explorer written in node.js.
