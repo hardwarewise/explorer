@@ -79,6 +79,13 @@
     "rl_top100": "Top 76-100",
 	"rl_top200": "Top 101-200",
     "rl_hundredplus": "201+",
+    "rl_timelocked": "TimeLocked Distribution",
+    "rl_1day": "1 Day",
+    "rl_2days": "2 Days",
+    "rl_7days": "7 Days",
+    "rl_14days": "14 Days",
+	"rl_30days": "30 Days",
+    "rl_30Daysplus": "30 Days+",
 
     "net_connections": "Connections",
     "net_address": "Address",

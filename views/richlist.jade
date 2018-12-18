@@ -37,6 +37,59 @@ block content
       $(window).resize(function () {
         pieWealthDist.replot( { resetAxes: false } );
       });
+
+      $.ajax({url: '/gettermdepositstats', success: function(json){
+            var n1Day = 0; var n2Days = 0; var n7Days = 0; var n14Days = 0; var n30Days = 0; var n30DaysP = 0;
+            var totalTimeLocked = 0;
+            for (var i in json.distribution[0]) {
+                if (i == "1day"){n1Day=parseInt(json.distribution[0][i]); totalTimeLocked += n1Day; $("#n1Day").text(n1Day);}
+                if (i == "2days"){n2Days=parseInt(json.distribution[0][i]); totalTimeLocked += n2Days; $("#n2Days").text(n2Days);}
+                if (i == "7days"){n7Days=parseInt(json.distribution[0][i]); totalTimeLocked += n7Days; $("#n7Days").text(n7Days);}
+                if (i == "14days"){n14Days=parseInt(json.distribution[0][i]); totalTimeLocked += n14Days; $("#n14Days").text(n14Days);}
+                if (i == "30days"){n30Days=parseInt(json.distribution[0][i]); totalTimeLocked += n30Days; $("#n30Days").text(n30Days);}
+                if (i == "More30days"){n30DaysP=parseInt(json.distribution[0][i]); totalTimeLocked += n30DaysP;}
+                $("#n1DayP").text(parseFloat(n1Day/totalTimeLocked*100).toFixed(2));
+                $("#n2DaysP").text(parseFloat(n2Days/totalTimeLocked*100).toFixed(2));
+                $("#n7DaysP").text(parseFloat(n7Days/totalTimeLocked*100).toFixed(2));
+                $("#n14DaysP").text(parseFloat(n14Days/totalTimeLocked*100).toFixed(2));
+                $("#n30DaysP").text(parseFloat(n30Days/totalTimeLocked*100).toFixed(2));
+                $("#TotalTimeLockedP").text(parseFloat((n1Day + n2Days+ n7Days + n14Days + n30Days)/totalTimeLocked*100).toFixed(2));
+            }
+            var dataDist = [
+              ['1 Day', n1Day], ['2 Days', n2Days],['7 Days', n7Days],['14 Days', n14Days],['30 Days', n30Days],['30 Days+', n30DaysP]
+            ];
+            var pieDistTermDeposit = $.jqplot('pieChartDistTermDeposit', [dataDist],
+                {
+                    seriesColors: [ "#FF0000", "#FF8000", "#FFBF00", "#FFFF00", "#00FF00", "#00FFBF"],
+                    series: [{
+                        // Make this a pie chart.
+                        renderer: $.jqplot.PieRenderer,
+                        rendererOptions: {
+                            diameter: 200,
+                            padding: 0,
+                            sliceMargin: 4,
+                            startAngle: -90,
+                           // Put dataDist labels on the pie slices.
+                           // By default, labels show the percentage of the slice.
+                           showDataLabels: true,
+                        }
+                    }],
+                    grid: {borderWidth:0, shadow:false},
+                    legend: {
+                        show: true,
+                        rendererOptions: {
+                            numberRows: 2,
+                            border: 'none'
+                        },
+                        location: 's'
+                    }
+                }
+            );
+
+            $(window).resize(function () {
+                pieDistTermDeposit.replot( { resetAxes: false } );
+            });
+      }});
     });
   .col-xs-12.col-md-8
     .tabpanel
@@ -99,4 +152,63 @@ block content
               td.text-center #{(100 - parseFloat(distf.percent)).toFixed(2)}
       center
         div#pieChart(style="width:300px;height:305px;margin:0px;")
+
+      #summary-panel.panel.panel-default(style='margin-top:47px;')
+        .panel-heading
+          h3.panel-title #{settings.locale.rl_timelocked}
+        table.table.table-hover.table-bordered
+          thead
+            tr
+              th
+              th Amount (#{settings.symbol})
+              th.text-center %
+          tbody
+            tr
+              th
+                div.pull-left(style='background-color:#FF0000;width:20px;height:20px;margin-right:6px;')
+                span #{settings.locale.rl_1day}
+              td
+                span#n1Day -
+              td.text-center
+                span#n1DayP -
+            tr
+              th
+                div.pull-left(style='background-color:#FF8000;width:20px;height:20px;margin-right:6px;')
+                span #{settings.locale.rl_2days}
+              td
+                span#n2Days -
+              td.text-center
+                span#n2DaysP -
+            tr
+              th
+                div.pull-left(style='background-color:#FFBF00;width:20px;height:20px;margin-right:6px;')
+                span #{settings.locale.rl_7days}
+              td
+                span#n7Days -
+              td.text-center
+                span#n7DaysP -
+            tr
+              th
+                div.pull-left(style='background-color:#FFFF00;width:20px;height:20px;margin-right:6px;')
+                span #{settings.locale.rl_14days}
+              td
+                span#n14Days -
+              td.text-center
+                span#n14DaysP -
+            tr
+              th
+                div.pull-left(style='background-color:#00FF00;width:20px;height:20px;margin-right:6px;')
+                span #{settings.locale.rl_30days}
+              td
+                span#n30Days -
+              td.text-center
+                span#n30DaysP -
+            tr
+              th
+                span #{settings.locale.total}
+              td
+              td.text-center
+                span#TotalTimeLockedP -
+      center
+        div#pieChartDistTermDeposit(style="width:300px;height:305px;margin:0px;")
   .row.footer-margin
