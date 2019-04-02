@@ -1,0 +1,42 @@
+extends layout
+block content
+    script.
+        $(document).ready(function(){
+            var rtable = $('#stats-table').dataTable( {
+                autoWidth: false,
+                searching: false,
+                ordering: false,
+                //responsive: true,
+                lengthChange: false,
+                //processing: true,
+                ajax: {
+                    url: '/ext/pool-stats',
+                    dataSrc: function ( json ) {
+                      for (var i = 0; i < json.data.length; i++) {
+                        json.data[i]['pool'] = "<a href='http://" + json.data[i]['homepage'] + "'>" + json.data[i]['pool_name'] + "</a>";
+                      }
+                      return json.data;
+                    }
+                },
+                columns: [
+                    { data: 'pool', width: '15%'},
+                    { data: 'block_height', width: '15%' },
+                    { data: 'workers', width: '15%' },
+                    { data: 'blocks_in_24h', width: '15%' },
+                    { data: 'last_block', width: '15%' },
+                    { data: 'pool_hashrate', width: '25%' }
+                ]
+            });
+            /*setInterval( function () {
+                rtable.api().ajax.reload(null, false);
+            }, 45000 );*/
+        });
+    .col-xs-12.col-md-10.col-md-offset-1(style="margin-bottom: 5%")
+        table#stats-table.table.table-striped.table-bordered
+            thead
+                th Pool
+                th Block height
+                th Workers
+                th Blocks in 24h
+                th Last block
+                th Pool hashrate
