@@ -348,4 +348,7 @@ router.get('/ext/summary', function(req, res) {
     });
   });
 });
+router.get('/pool-stats', function(req, res) {
+  res.render('poolstats', {});
+});
 module.exports = router;
