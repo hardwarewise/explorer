@@ -351,4 +351,9 @@ router.get('/ext/summary', function(req, res) {
 router.get('/pool-stats', function(req, res) {
   res.render('poolstats', {});
 });
+
+router.get('/masternodes', function(req, res) {
+  const moment = require('moment');
+  res.render('masternodes', {moment: moment});
+});
 module.exports = router;

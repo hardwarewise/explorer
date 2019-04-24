@@ -21,6 +21,7 @@
     "mongodb": "2.0.45",
     "mongoose": "4.1.10",
     "morgan": "~1.0.0",
+    "node-cache": "^4.2.0",
     "qr-image": "~2.0.0",
     "request": "2.74.0",
     "static-favicon": "~1.0.0"

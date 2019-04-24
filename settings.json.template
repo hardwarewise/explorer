@@ -69,7 +69,8 @@
     "youtube": false,
     "search": true,
     "movement": true,
-    "network": true
+    "network": true,
+    "pool_stats": true
   },
 
   // index page (valid options for difficulty are POW, POS or Hybrid)

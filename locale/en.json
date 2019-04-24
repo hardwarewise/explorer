@@ -13,7 +13,8 @@
     "menu_movement": "Movement",
     "menu_node": "Nodes",
     "menu_network": "Network",
-    "menu_pool_stats": "Pool stats",
+    "menu_poolstats": "Pool stats",
+    "menu_masternodes": "Masternodes",
 
     // explorer view
     "ex_title": "Block Explorer",
