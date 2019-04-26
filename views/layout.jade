@@ -130,12 +130,17 @@ html
                 a.navbar-link(href='/info')
                   span.glyphicon.glyphicon-info-sign
                   span.menu-text #{settings.locale.menu_api}
-            if settings.display.pool_stats == true
+            if settings.display.poolstats == true
               li#info
                 a.navbar-link(href='/pool-stats')
                   span.glyphicon.glyphicon-stats
-                  span.menu-text #{settings.locale.menu_pool_stats}
-        .search(style='float:right;width:40%;margin-top:5px;')
+                  span.menu-text #{settings.locale.menu_poolstats}
+            if settings.display.masternodes == true
+              li#info
+                a.navbar-link(href='/masternodes')
+                  span.glyphicon.glyphicon-list-alt
+                  span.menu-text #{settings.locale.menu_masternodes}
+        .search(style='float:right;width:34%;margin-top:5px;')
           form.form-inline(method='post', action='/search')
             #index-search.form-group
               input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
