@@ -42,7 +42,7 @@ html
           }});
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
               const keys = Object.keys(json.data);
-              var big = 0, mid = 0, lil = 0;
+              var big = 0, big_enable = 0, big_disable = 0, mid = 0, mid_enable = 0, mid_disable = 0, lil = 0, lil_enable = 0, lil_disable = 0;
               for (var i = 0; i < keys.length; i++) {
                 const line = {}
                 line['address'] = keys[i];
@@ -53,13 +53,23 @@ html
                     noEmptyData.push(lineData[j])
                   }
                 }
-                if (noEmptyData[8] == 1) { lil++; }
-                if (noEmptyData[8] == 5) { mid++; }
-                if (noEmptyData[8] == 10) { big++; }
+                line['status'] = noEmptyData[0].replace(/_/g, ' ').toLowerCase()
+                if (noEmptyData[8] == 1) { 
+                  lil++;
+                  if (line['status'] == 'enabled') { lil_enable++; } else { lil_disable++; }
+                }
+                if (noEmptyData[8] == 5) { 
+                  mid++; 
+                  if (line['status'] == 'enabled') { mid_enable++; } else { mid_disable++; }
+                }
+                if (noEmptyData[8] == 10) { 
+                  big++;
+                  if (line['status'] == 'enabled') { big_enable++; } else { big_disable++; }
+                }
               }
-              $("#n_big").text(big);
-              $("#n_mid").text(mid);
-              $("#n_lil").text(lil);
+              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ")");
+              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ")");
+              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ")");
           }});
         }
         $('.block-last-next').tooltip({
