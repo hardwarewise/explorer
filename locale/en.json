@@ -14,7 +14,7 @@
     "menu_node": "Nodes",
     "menu_network": "Network",
     "menu_poolstats": "Pool stats",
-    "menu_masternodes": "Masternodes",
+    "menu_infinitynodes": "InfinityNodes",
 
     // explorer view
     "ex_title": "Block Explorer",
@@ -50,6 +50,10 @@
     "wallets": "Wallets",
     "total_locked": "Total TimeLocked",
     "timelocked": "TimeLocked",
+    "infinitynode_stat": "InfinityNodes Stat",
+    "infinitynode_n_big": "BIG",
+    "infinitynode_n_mid": "MID",
+    "infinitynode_n_lil": "LIL",
     "height": "Height",
     "timestamp": "Timestamp",
     "size": "Size",

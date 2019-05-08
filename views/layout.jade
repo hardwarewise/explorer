@@ -40,6 +40,27 @@ html
             $("#lockedtx").text(json.nTimeLockedTxs);
             $("#lockedcoin").text(json.nTotalTimeLockedValue);
           }});
+          $.ajax({url: '/ext/masternodelist', success: function ( json ) {
+              const keys = Object.keys(json.data);
+              var big = 0, mid = 0, lil = 0;
+              for (var i = 0; i < keys.length; i++) {
+                const line = {}
+                line['address'] = keys[i];
+                const lineData = json.data[keys[i]].split(" ");
+                const noEmptyData = [];
+                for (var j = 0; j < lineData.length; j++) {
+                  if (lineData[j].length !== 0) {
+                    noEmptyData.push(lineData[j])
+                  }
+                }
+                if (noEmptyData[8] == 1) { lil++; }
+                if (noEmptyData[8] == 5) { mid++; }
+                if (noEmptyData[8] == 10) { big++; }
+              }
+              $("#n_big").text(big);
+              $("#n_mid").text(mid);
+              $("#n_lil").text(lil);
+          }});
         }
         $('.block-last-next').tooltip({
           animation: true,
@@ -135,11 +156,11 @@ html
                 a.navbar-link(href='/pool-stats')
                   span.glyphicon.glyphicon-stats
                   span.menu-text #{settings.locale.menu_poolstats}
-            if settings.display.masternodes == true
+            if settings.display.infinitynodes == true
               li#info
-                a.navbar-link(href='/masternodes')
+                a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
-                  span.menu-text #{settings.locale.menu_masternodes}
+                  span.menu-text #{settings.locale.menu_infinitynodes}
         .search(style='float:right;width:34%;margin-top:5px;')
           form.form-inline(method='post', action='/search')
             #index-search.form-group
@@ -149,9 +170,9 @@ html
    .panel-body(style='margin-bottom:5px;')
     .col-md-12
       .row.text-center
-        .col-md-4
+        .col-md-3
           <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script> <div class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC"></div> 
-        .col-md-4
+        .col-md-3
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
               strong #{settings.locale.network}
@@ -190,7 +211,7 @@ html
                     td
                       span#supply -
               <br />
-        .col-md-4
+        .col-md-3
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
               strong #{settings.locale.timelocked}
@@ -212,6 +233,29 @@ html
                       span #{settings.locale.total_locked}
                     td
                       span#lockedcoin -
+              <br />
+        .col-md-3
+          .panel.panel-default.hidden-sm.hidden-xs
+            .panel-heading
+              strong #{settings.locale.infinitynode_stat}
+            .panel-body
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                        span #{settings.locale.infinitynode_n_big}
+                    td
+                        span#n_big -
+                  tr
+                    td
+                      span #{settings.locale.infinitynode_n_mid}
+                    td
+                      span#n_mid -
+                  tr
+                    td
+                      span #{settings.locale.infinitynode_n_lil}
+                    td
+                      span#n_lil -
               <br />
     block content
     .navbar.navbar-default.navbar-fixed-bottom.hidden-xs

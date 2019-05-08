@@ -25,23 +25,29 @@ block content
                   }
                 }
                 //console.log(lineData);
+                line['address'] = line['address'].substring(line['address'].length - 12, line['address'].length);
                 line['status'] = noEmptyData[0].replace(/_/g, ' ').toLowerCase()
                 line['protocol'] = noEmptyData[1]
                 line['last_seen'] = moment.unix(noEmptyData[3]).fromNow()
                 line['active_time'] = moment.duration(parseInt(noEmptyData[4]), "seconds").humanize()
                 line['ip'] = noEmptyData[7]
+                line['type'] = 'Unknown';
+                if (noEmptyData[8] == 1) { line['type'] = 'LIL'; }
+                if (noEmptyData[8] == 5) { line['type'] = 'MID'; }
+                if (noEmptyData[8] == 10) { line['type'] = 'BIG'; }
                 data.push(line)
               }
               return data;
             }
           },
           columns: [
-            { data: 'address', width: '50%'},
+            { data: 'address', width: '40%'},
             { data: 'status', width: '10%' },
             { data: 'protocol', width: '5%' },
             { data: 'active_time', width: '10%' },
             { data: 'last_seen', width: '10%' },
-            { data: 'ip', width: '10%' }
+            { data: 'ip', width: '10%' },
+            { data: 'type', width: '10%' }
           ]
         });
       });
@@ -54,3 +60,4 @@ block content
                 th Active time
                 th Last seen
                 th IP
+                th Type

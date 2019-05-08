@@ -197,11 +197,11 @@ app.use('/ext/masternodelist', async function (req, res) {
 
 
 
-  async function getMasternodes() {
+  async function getInfinityNodes() {
     return axios.get(base_url + 'masternodelist?mode=info');
   }
-  const response = await getCacheValue('masternodes', () => {
-    return getMasternodes();
+  const response = await getCacheValue('infinitynodes', () => {
+    return getInfinityNodes();
   }).then((result) => {
     return result
   })

@@ -352,8 +352,8 @@ router.get('/pool-stats', function(req, res) {
   res.render('poolstats', {});
 });
 
-router.get('/masternodes', function(req, res) {
+router.get('/infinitynodes', function(req, res) {
   const moment = require('moment');
-  res.render('masternodes', {moment: moment});
+  res.render('infinitynodes', {moment: moment});
 });
 module.exports = router;
