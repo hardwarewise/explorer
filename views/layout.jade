@@ -36,9 +36,9 @@ html
             $("#lblX1").text(' ');
           }});
           $.ajax({url: '/gettermdepositstats', success: function(json){
-            $("#lockedwallet").text(json.nAddress);
-            $("#lockedtx").text(json.nTimeLockedTxs);
-            $("#lockedcoin").text(json.nTotalTimeLockedValue);
+            $("#burnfee").text(json.nBurnFee);
+            $("#burnnode").text(json.nBurnNode);
+            $("#burntotal").text(json.nBurnFee + json.nBurnNode);
           }});
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
               const keys = Object.keys(json.data);
@@ -224,25 +224,25 @@ html
         .col-md-3
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
-              strong #{settings.locale.timelocked}
+              strong #{settings.locale.burn_stat}
             .panel-body
               table.table.table-bordered.summary-table
                 tbody
                   tr
                     td
-                        span #{settings.locale.wallets}
+                        span #{settings.locale.burn_fee}
                     td
-                        span#lockedwallet -
+                        span#burnfee -
                   tr
                     td
-                      span #{settings.locale.transactions}
+                      span #{settings.locale.burn_node}
                     td
-                      span#lockedtx -
+                      span#burnnode -
                   tr
                     td
-                      span #{settings.locale.total_locked}
+                      span #{settings.locale.burn_total}
                     td
-                      span#lockedcoin -
+                      span#burntotal -
               <br />
         .col-md-3
           .panel.panel-default.hidden-sm.hidden-xs

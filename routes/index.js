@@ -144,7 +144,7 @@ router.get('/gettermdepositstats', function(req, res) {
 		console.warn('No stats file found. Continuing using defaults!');
 	}
 
-	var termdepositstats = {"nAddress": 0, "nTimeLockedTxs": 0, "nTotalTimeLockedValue": 0};
+	var termdepositstats = {"nAddress": 0, "nTimeLockedTxs": 0, "nTotalTimeLockedValue": 0, "nBurnFee": 0, "nBurnNode": 0};
 	try {
 		if(termdepositstatsStr) {
 			termdepositstatsStr = jsonminify(termdepositstatsStr).replace(",]","]").replace(",}","}");
@@ -152,6 +152,8 @@ router.get('/gettermdepositstats', function(req, res) {
 			res.send({ 	nAddress: termdepositstats.nAddress,
 					nTimeLockedTxs: termdepositstats.nTimeLockedTxs,
 					nTotalTimeLockedValue: termdepositstats.nTotalTimeLockedValue,
+					nBurnFee: termdepositstats.nBurnFee,
+					nBurnNode: termdepositstats.nBurnNode,
 					distribution: termdepositstats.distribution
 			});
 		}else{
