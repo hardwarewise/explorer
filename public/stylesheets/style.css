@@ -1,7 +1,7 @@
 body {
   padding: 80px 40px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
- /* background-image: url('/images/background2.png');*/
+  background-image: url('/images/bg.png');
 }
 
 #index-search {
@@ -10,7 +10,8 @@ body {
 
 .nav-search input {
 	width: 400px !important;
-	margin-right: 5px;	
+	margin-right: 5px;
+  
 }
 
 .view_tx {
@@ -163,4 +164,3 @@ tr {
 	position: absolute;
 	bottom: 0px;
 }
-
