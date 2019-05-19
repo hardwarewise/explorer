@@ -43,6 +43,8 @@ html
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
               const keys = Object.keys(json.data);
               var big = 0, big_enable = 0, big_disable = 0, mid = 0, mid_enable = 0, mid_disable = 0, lil = 0, lil_enable = 0, lil_disable = 0;
+              var reward_lil = 0, reward_mid = 0, reward_big = 0;
+              var burnAmount_lil = 0, burnAmount_mid = 0, burnAmount_big = 0;
               for (var i = 0; i < keys.length; i++) {
                 const line = {}
                 line['address'] = keys[i];
@@ -56,20 +58,29 @@ html
                 line['status'] = noEmptyData[0].replace(/_/g, ' ').toLowerCase()
                 if (noEmptyData[8] == 1) { 
                   lil++;
+                  reward_lil = noEmptyData[9];
+                  burnAmount_lil = noEmptyData[10];
                   if (line['status'] == 'enabled') { lil_enable++; } else { lil_disable++; }
                 }
                 if (noEmptyData[8] == 5) { 
                   mid++; 
+                  reward_mid = noEmptyData[9];
+                  burnAmount_mid = noEmptyData[10];
                   if (line['status'] == 'enabled') { mid_enable++; } else { mid_disable++; }
                 }
                 if (noEmptyData[8] == 10) { 
                   big++;
+                  reward_big = noEmptyData[9];
+                  burnAmount_big = noEmptyData[10];
                   if (line['status'] == 'enabled') { big_enable++; } else { big_disable++; }
                 }
               }
-              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ")");
-              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ")");
-              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ")");
+              var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / (720 * big_enable) * reward_big;
+              var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / (720 * mid_enable) * reward_mid;
+              var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / (720 * lil_enable) * reward_lil;
+              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + roi_big + " days");
+              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + roi_mid + " days");
+              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + roi_lil + " days");
           }});
         }
         $('.block-last-next').tooltip({
