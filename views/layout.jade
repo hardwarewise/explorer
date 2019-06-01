@@ -38,7 +38,6 @@ html
             $("#lblConnections").text(json.data[0].connections + ' connections');
             $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
             $("#lblX1").text(' ');
-            sleep(500);
                       $.ajax({url: '/gettermdepositstats', success: function(json){
                         $("#burnfee").text(json.nBurnFee);
                         $("#burnnode").text(json.nBurnNode);
