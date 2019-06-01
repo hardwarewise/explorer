@@ -26,8 +26,10 @@ html
       $(document).ready(function(){
         $('##{active}').addClass('active');
         function update_stats(){
+          var supply = 0;
           $.ajax({url: '/ext/summary', success: function(json){
             $("#supply").text(json.data[0].supply);
+            supply = json.data[0].supply;
             $("#difficulty").text(json.data[0].difficulty);
             $("#difficultyHybrid").text(json.data[0].difficultyHybrid);
             $("#hashrate").text(json.data[0].hashrate);
@@ -40,6 +42,7 @@ html
             $("#burnfee").text(json.nBurnFee);
             $("#burnnode").text(json.nBurnNode);
             $("#burntotal").text(json.nBurnFee + json.nBurnNode);
+            $("#supply").text(supply - json.nBurnFee - json.nBurnNode);
           }});
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
               const keys = Object.keys(json.data);
@@ -76,9 +79,9 @@ html
                   if (line['status'] == 'enabled') { big_enable++; } else { big_disable++; }
                 }
               }
-              var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / (720 * big_enable) * reward_big;
-              var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / (720 * mid_enable) * reward_mid;
-              var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / (720 * lil_enable) * reward_lil;
+              var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / ((720 / big_enable) * reward_big);
+              var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / ((720 / mid_enable) * reward_mid);
+              var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / ((720 / lil_enable) * reward_lil);
               $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + roi_big + " days");
               $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + roi_mid + " days");
               $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + roi_lil + " days");
