@@ -27,6 +27,7 @@ html
         $('##{active}').addClass('active');
         function update_stats(){
           var supply = 0;
+          var burnt = 0;
           $.ajax({url: '/ext/summary', success: function(json){
             $("#supply").text(json.data[0].supply);
             supply = json.data[0].supply;
@@ -37,12 +38,14 @@ html
             $("#lblConnections").text(json.data[0].connections + ' connections');
             $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
             $("#lblX1").text(' ');
-          }});
-          $.ajax({url: '/gettermdepositstats', success: function(json){
-            $("#burnfee").text(json.nBurnFee);
-            $("#burnnode").text(json.nBurnNode);
-            $("#burntotal").text(json.nBurnFee + json.nBurnNode);
-            $("#supply").text(supply - json.nBurnFee - json.nBurnNode);
+            sleep(500);
+                      $.ajax({url: '/gettermdepositstats', success: function(json){
+                        $("#burnfee").text(json.nBurnFee);
+                        $("#burnnode").text(json.nBurnNode);
+                        $("#burntotal").text(json.nBurnFee + json.nBurnNode);
+                        burnt = json.nBurnFee + json.nBurnNode;
+                        $("#supply").text(supply - burnt);
+                      }});
           }});
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
               const keys = Object.keys(json.data);
