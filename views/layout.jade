@@ -84,9 +84,9 @@ html
               var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / ((720 / big_enable) * reward_big);
               var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / ((720 / mid_enable) * reward_mid);
               var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / ((720 / lil_enable) * reward_lil);
-              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + roi_big + " days");
-              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + roi_mid + " days");
-              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + roi_lil + " days");
+              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + Math.floor(roi_big) + " days");
+              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + Math.floor(roi_mid) + " days");
+              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + Math.floor(roi_lil) + " days");
           }});
         }
         $('.block-last-next').tooltip({
@@ -188,7 +188,7 @@ html
                 a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
                   span.menu-text #{settings.locale.menu_infinitynodes}
-        .search(style='float:right;width:34%;margin-top:5px;')
+        .search(style='float:right;width:50%;margin-top:5px;')
           form.form-inline(method='post', action='/search')
             #index-search.form-group
               input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
