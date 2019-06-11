@@ -292,10 +292,11 @@ html
               a#youtube-icon(href="https://www.youtube.com/channel/#{settings.youtube}", target='_blank')
                 span.glyphicon.fa.fa-youtube
      .col-md-4
-        ul.nav
-          li.text-center(style='margin-left:80px;margin-right:80px;')
-            p(style='margin-top:15px;')
-              a.navbar-link(href='https://github.com/iquidus/explorer', target='_blank') Powered by Iquidus Explorer
-      span.connections
-        label#lblBlockcount.label.label-default -
-        label#lblConnections.label.label-default -
+        block intro
+ .container
+      div(id="images")
+         center
+             img(alt="sinovate", src="/images/sinlogo.png", width="160", margin-top="0", style="text-align:middle")
+      //span.connections
+        //label#lblBlockcount.label.label-default -
+        //label#lblConnections.label.label-default -

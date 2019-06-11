@@ -2,6 +2,7 @@ body {
   padding: 80px 40px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-image: url('/images/bg.png');
+   background-size:cover;
 }
 
 #index-search {
