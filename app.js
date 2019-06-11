@@ -32,7 +32,7 @@ const getCacheValue = (key, storeFunction) => {
 bitcoinapi.setWalletDetails(settings.wallet);
 if (settings.heavy != true) {
   bitcoinapi.setAccess('only', ['getinfo', 'getnetworkhashps', 'getmininginfo','getdifficulty', 'getconnectioncount',
-    'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction', 'getpeerinfo', 'gettxoutsetinfo', 'gettermdepositstats', 'masternodelist']);
+    'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction', 'getpeerinfo', 'gettxoutsetinfo', 'masternodelist']);
 } else {
   // enable additional heavy api calls
   /*
@@ -49,7 +49,7 @@ if (settings.heavy != true) {
   bitcoinapi.setAccess('only', ['getinfo', 'getstakinginfo', 'getnetworkhashps', 'getdifficulty', 'getconnectioncount',
     'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction','getmaxmoney', 'getvote',
     'getmaxvote', 'getphase', 'getreward', 'getnextrewardestimate', 'getnextrewardwhenstr',
-    'getnextrewardwhensec', 'getsupply', 'gettxoutsetinfo', 'gettermdepositstats']);
+    'getnextrewardwhensec', 'getsupply', 'gettxoutsetinfo']);
 }
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -194,8 +194,6 @@ app.use('/ext/masternodelist', async function (req, res) {
       return result;
     });
   }
-
-
 
   async function getInfinityNodes() {
     return axios.get(base_url + 'masternodelist?mode=info');
