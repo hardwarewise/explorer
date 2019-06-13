@@ -44,15 +44,15 @@ html
             burnt = json.burnFee + json.burnNode;
             $("#supply").text(supply - burnt);
           }});
-          $.ajax({url: '/ext/masternodelist', success: function ( json ) {
-              const keys = Object.keys(json.data);
+          $.ajax({url: '/nodelist', success: function ( json ) {
+              const keys = Object.keys(json);
               var big = 0, big_enable = 0, big_disable = 0, mid = 0, mid_enable = 0, mid_disable = 0, lil = 0, lil_enable = 0, lil_disable = 0;
               var reward_lil = 0, reward_mid = 0, reward_big = 0;
               var burnAmount_lil = 0, burnAmount_mid = 0, burnAmount_big = 0;
               for (var i = 0; i < keys.length; i++) {
                 const line = {}
                 line['address'] = keys[i];
-                const lineData = json.data[keys[i]].split(" ");
+                const lineData = json[keys[i]].split(" ");
                 const noEmptyData = [];
                 for (var j = 0; j < lineData.length; j++) {
                   if (lineData[j].length !== 0) {
