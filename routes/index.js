@@ -164,6 +164,50 @@ router.get('/gettermdepositstats', function(req, res) {
 	}
 });
 
+router.get('/summary', function(req, res) {
+    var summarystatsFilename = "summary.json";
+	summarystatsFilename = "./" + summarystatsFilename;
+
+	var summarystatsStr;
+	try{
+		//read the settings sync
+		summarystatsStr = fs.readFileSync(summarystatsFilename).toString();
+	} catch(e){
+		console.warn('No stats file found. Continuing using defaults!');
+	}
+
+	var summarystats = {"difficulty":0,
+						"difficultyHybrid":"",
+						"supply":0,
+						"hashrate":"0.0",
+						"lastPrice":0,
+						"connections":0,
+						"blockcount":0,
+						"burnFee":0,
+						"burnNode":0};
+	try {
+		if(summarystatsStr) {
+			summarystatsStr = jsonminify(summarystatsStr).replace(",]","]").replace(",}","}");
+			summarystats = JSON.parse(summarystatsStr);
+			res.send({
+					difficulty: summarystats.data[0].difficulty,
+					difficultyHybrid: summarystats.data[0].difficultyHybrid,
+					supply: summarystats.data[0].supply,
+					hashrate: summarystats.data[0].hashrate,
+					lastPrice: summarystats.data[0].lastPrice,
+					connections: summarystats.data[0].connections,
+					blockcount: summarystats.data[0].blockcount,
+					burnFee: summarystats.data[0].burnFee,
+					burnNode: summarystats.data[0].burnNode
+			});
+		}else{
+			res.send(summarystats);
+		}
+	}catch(e){
+		res.send(summarystats);
+	}
+});
+
 router.get('/markets/:market', function(req, res) {
   var market = req.params['market'];
   if (settings.markets.enabled.indexOf(market) != -1) {

@@ -28,20 +28,20 @@ html
         function update_stats(){
           var supply = 0;
           var burnt = 0;
-          $.ajax({url: '/ext/summary', success: function(json){
-            $("#supply").text(json.data[0].supply);
-            supply = json.data[0].supply;
-            $("#difficulty").text(json.data[0].difficulty);
-            $("#difficultyHybrid").text(json.data[0].difficultyHybrid);
-            $("#hashrate").text(json.data[0].hashrate);
-            $("#lastPrice").text(json.data[0].lastPrice.toFixed(8));
-            $("#lblConnections").text(json.data[0].connections + ' connections');
-            $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
+          $.ajax({url: '/summary', success: function(json){
+            $("#supply").text(json.supply);
+            supply = json.supply;
+            $("#difficulty").text(json.difficulty);
+            $("#difficultyHybrid").text(json.difficultyHybrid);
+            $("#hashrate").text(json.hashrate);
+            $("#lastPrice").text(json.lastPrice.toFixed(8));
+            $("#lblConnections").text(json.connections + ' connections');
+            $("#lblBlockcount").text(json.blockcount + ' blocks');
             $("#lblX1").text(' ');
-            $("#burnfee").text(json.data[0].burnFee);
-            $("#burnnode").text(json.data[0].burnNode);
-            $("#burntotal").text(json.data[0].burnFee + json.data[0].burnNode);
-            burnt = json.data[0].burnFee + json.data[0].burnNode;
+            $("#burnfee").text(json.burnFee);
+            $("#burnnode").text(json.burnNode);
+            $("#burntotal").text(json.burnFee + json.burnNode);
+            burnt = json.burnFee + json.burnNode;
             $("#supply").text(supply - burnt);
           }});
           $.ajax({url: '/ext/masternodelist', success: function ( json ) {
