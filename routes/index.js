@@ -208,6 +208,33 @@ router.get('/summary', function(req, res) {
 	}
 });
 
+router.get('/nodelist', function(req, res) {
+    var nodelistFilename = "infinitynode.json";
+	nodelistFilename = "./" + nodelistFilename;
+
+	var nodeliststatsStr;
+	try{
+		//read the settings sync
+		nodeliststatsStr = fs.readFileSync(nodelistFilename).toString();
+	} catch(e){
+		console.warn('No stats file found. Continuing using defaults!');
+	}
+
+	var nodeliststats = {"address":""};
+	try {
+		if(nodeliststatsStr) {
+			nodeliststatsStr = jsonminify(nodeliststatsStr).replace(",]","]").replace(",}","}");
+			nodeliststats = JSON.parse(nodeliststatsStr);
+			res.send(nodeliststats);
+		}else{
+			console.log("in");
+			res.send(nodeliststats);
+		}
+	}catch(e){
+		res.send(nodeliststats);
+	}
+});
+
 router.get('/markets/:market', function(req, res) {
   var market = req.params['market'];
   if (settings.markets.enabled.indexOf(market) != -1) {

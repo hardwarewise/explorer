@@ -175,6 +175,7 @@ app.use('/ext/pool-stats', async function (req, res) {
     data: data
   });
 });
+/* replaced by "nodelis" which call from plat json file
 app.use('/ext/masternodelist', async function (req, res) {
   const axios = require('axios');
   const moment = require('moment');
@@ -208,7 +209,7 @@ app.use('/ext/masternodelist', async function (req, res) {
     data: response.data
   });
 });
-
+*/
 // locals
 app.set('title', settings.title);
 app.set('symbol', settings.symbol);
