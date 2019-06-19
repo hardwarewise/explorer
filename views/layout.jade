@@ -41,8 +41,6 @@ html
             $("#burnfee").text(json.burnFee);
             $("#burnnode").text(json.burnNode);
             $("#burntotal").text(json.burnFee + json.burnNode);
-            burnt = json.burnFee + json.burnNode;
-            $("#supply").text(supply - burnt);
           }});
           $.ajax({url: '/nodelist', success: function ( json ) {
               const keys = Object.keys(json);
