@@ -192,7 +192,7 @@ router.get('/summary', function(req, res) {
 			res.send({
 					difficulty: summarystats.data[0].difficulty,
 					difficultyHybrid: summarystats.data[0].difficultyHybrid,
-					supply: summarystats.data[0].supply,
+					supply: summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode,
 					hashrate: summarystats.data[0].hashrate,
 					lastPrice: summarystats.data[0].lastPrice,
 					connections: summarystats.data[0].connections,
@@ -227,12 +227,58 @@ router.get('/nodelist', function(req, res) {
 			nodeliststats = JSON.parse(nodeliststatsStr);
 			res.send(nodeliststats);
 		}else{
-			console.log("in");
 			res.send(nodeliststats);
 		}
 	}catch(e){
 		res.send(nodeliststats);
 	}
+});
+
+router.get('/poollist', function(req, res) {
+	const data = [];
+	for(const pool in settings.pools) {
+		var poollistFilename = settings.pools[pool].pool_name + ".json";
+		poollistFilename = "./" + poollistFilename;
+
+		var poolliststatsStr;
+		try{
+			//read the settings sync
+			poolliststatsStr = fs.readFileSync(poollistFilename).toString();
+		} catch(e){
+			console.warn('No stats file found. Continuing using defaults!');
+			continue;
+		}
+
+		var poolliststats = {"":""};
+		try {
+			if(poolliststatsStr) {
+				poolliststatsStr = jsonminify(poolliststatsStr).replace(",]","]").replace(",}","}");
+				poolliststats = JSON.parse(poolliststatsStr);
+				data.push({
+					pool_name: settings.pools[pool].pool_name,
+					homepage: settings.pools[pool].homepage,
+					block_height: poolliststats.SIN['height'],
+					workers: poolliststats.SIN['workers'],
+					blocks_in_24h: poolliststats.SIN['24h_blocks'],
+					last_block: poolliststats.SIN['lastblock'],
+					pool_hashrate: poolliststats.SIN['hashrate'],
+					"SIN": poolliststats.SIN
+				});
+			}else{
+				data.push({
+					poolliststats
+				});
+			}
+		}catch(e){
+			data.push({
+					poolliststats
+			});
+		}
+	}
+
+	res.send({
+		data: data
+	});
 });
 
 router.get('/markets/:market', function(req, res) {

@@ -10,12 +10,20 @@ block content
                 lengthChange: false,
                 //processing: true,
                 ajax: {
-                    url: '/ext/pool-stats',
+                    url: '/poollist',
                     dataSrc: function ( json ) {
+                      const data = [];
                       for (var i = 0; i < json.data.length; i++) {
-                        json.data[i]['pool'] = "<a href='http://" + json.data[i]['homepage'] + "'>" + json.data[i]['pool_name'] + "</a>";
+                        const item = {}
+                        item['pool'] = "<a href='http://" + json.data[i]['homepage'] + "'>" + json.data[i]['pool_name'] + "</a>";
+                        item['block_height'] = json.data[i]['block_height'];
+                        item['workers'] = json.data[i]['workers'];
+                        item['blocks_in_24h'] = json.data[i]['blocks_in_24h'];
+                        item['last_block'] = json.data[i]['last_block'];
+                        item['pool_hashrate'] = (json.data[i]['pool_hashrate']/1000000000).toFixed(2)+ ' GH/s';
+                        data.push(item)
                       }
-                      return json.data;
+                      return data;
                     }
                 },
                 columns: [
