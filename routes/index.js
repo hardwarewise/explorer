@@ -227,14 +227,12 @@ router.get('/getmoneysupply', function(req, res) {
 		if(summarystatsStr) {
 			summarystatsStr = jsonminify(summarystatsStr).replace(",]","]").replace(",}","}");
 			summarystats = JSON.parse(summarystatsStr);
-			res.send({
-					supply: summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode,
-			});
+			res.send( ' ' + (summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode));
 		}else{
-			res.send(summarystats);
+			res.send(' ' + 0);
 		}
 	}catch(e){
-		res.send(summarystats);
+		res.send(' ' + 0);
 	}
 });
 
