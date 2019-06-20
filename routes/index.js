@@ -208,6 +208,36 @@ router.get('/summary', function(req, res) {
 	}
 });
 
+router.get('/getmoneysupply', function(req, res) {
+    var summarystatsFilename = "summary.json";
+	summarystatsFilename = "./" + summarystatsFilename;
+
+	var summarystatsStr;
+	try{
+		//read the settings sync
+		summarystatsStr = fs.readFileSync(summarystatsFilename).toString();
+	} catch(e){
+		console.warn('No stats file found. Continuing using defaults!');
+	}
+
+	var summarystats = {"supply":0,
+						"burnFee":0,
+						"burnNode":0};
+	try {
+		if(summarystatsStr) {
+			summarystatsStr = jsonminify(summarystatsStr).replace(",]","]").replace(",}","}");
+			summarystats = JSON.parse(summarystatsStr);
+			res.send({
+					supply: summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode,
+			});
+		}else{
+			res.send(summarystats);
+		}
+	}catch(e){
+		res.send(summarystats);
+	}
+});
+
 router.get('/nodelist', function(req, res) {
     var nodelistFilename = "infinitynode.json";
 	nodelistFilename = "./" + nodelistFilename;
