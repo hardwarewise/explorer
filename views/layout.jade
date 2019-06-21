@@ -184,7 +184,11 @@ html
                 a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
                   span.menu-text #{settings.locale.menu_infinitynodes}
-        .search(style='float:right;width:50%;margin-top:5px;')
+.col-md-12
+   .panel-body(style='margin-bottom:5px;')
+    .col-md-12
+      .row.text-center
+        .search(style='align:center;margin-top:5px;')
           form.form-inline(method='post', action='/search')
             #index-search.form-group
               input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
@@ -194,7 +198,8 @@ html
     .col-md-12
       .row.text-center
         .col-md-3
-          <div class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC"></div>
+          .panel.panel-default.hidden-sm.hidden-xs
+            <div class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC"></div>
         .col-md-3
           .panel.panel-default.hidden-sm.hidden-xs
             .panel-heading
