@@ -7,7 +7,7 @@ block market_view
     .col-md-12  
       .panel.panel-default
         .panel-heading
-          strong #{settings.locale.bittrex} - #{marketdata.coin}/#{marketdata.exchange} - #{settings.locale.mkt_hours}
+          strong #{settings.locale.tradeogre} - #{marketdata.coin}/#{marketdata.exchange} - #{settings.locale.mkt_hours}
           a(href='#')
             span.fa.fa-line-chart.pull-right.view-chart-disabled.iquidus.market-toggle(data-toggle='tooltip', data-placement='bottom', title='#{settings.locale.mkt_no_chart}') 
         table.table.table-bordered.summary-table 
@@ -112,5 +112,5 @@ block market_view
                   td
                     =(parseFloat(order.quantity)*parseFloat(order.price)).toFixed(8)
                   td.hidden-xs
-                    =order.TimeStamp
+                    =order.date
       .footer-padding
