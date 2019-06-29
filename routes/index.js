@@ -373,6 +373,10 @@ router.get('/network', function(req, res) {
   res.render('network', {active: 'network'});
 });
 
+router.get('/dashboard', function(req, res) {
+  res.render('dashboard', {active: 'dashboard'});
+});
+
 router.get('/reward', function(req, res){
   //db.get_stats(settings.coin, function (stats) {
     console.log(stats);
