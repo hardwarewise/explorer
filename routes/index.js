@@ -91,7 +91,7 @@ function route_get_tx(res, txid) {
 }
 
 function route_get_index(res, error) {
-  res.render('index', { active: 'home', error: error, warning: null});
+  res.render('dashboard', { active: 'dashboard', error: error, warning: null});
 }
 
 function route_get_address(res, hash, count) {
@@ -371,6 +371,10 @@ router.get('/movement', function(req, res) {
 
 router.get('/network', function(req, res) {
   res.render('network', {active: 'network'});
+});
+
+router.get('/dashboard', function(req, res) {
+  res.render('dashboard', {active: 'dashboard'});
 });
 
 router.get('/reward', function(req, res){
