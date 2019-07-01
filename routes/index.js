@@ -91,7 +91,7 @@ function route_get_tx(res, txid) {
 }
 
 function route_get_index(res, error) {
-  res.render('index', { active: 'home', error: error, warning: null});
+  res.render('dashboard', { active: 'dashboard', error: error, warning: null});
 }
 
 function route_get_address(res, hash, count) {

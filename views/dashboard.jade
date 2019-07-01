@@ -1,0 +1,234 @@
+extends layout
+
+block content
+  script.
+      $(document).ready(function(){
+        $('##{active}').addClass('active');
+        function update_stats(){
+          var supply = 0;
+          var burnt = 0;
+          $.ajax({url: '/summary', success: function(json){
+            $("#supply").text(json.supply);
+            supply = json.supply;
+            $("#difficulty").text(json.difficulty);
+            $("#difficultyHybrid").text(json.difficultyHybrid);
+            $("#hashrate").text(json.hashrate);
+            $("#lastPrice").text(json.lastPrice.toFixed(8));
+            $("#lblConnections").text(json.connections + ' connections');
+            $("#lblBlockcount").text(json.blockcount + ' blocks');
+            $("#lblX1").text(' ');
+            $("#burnfee").text(json.burnFee);
+            $("#burnnode").text(json.burnNode);
+            $("#burntotal").text(json.burnFee + json.burnNode);
+          }});
+          $.ajax({url: '/nodelist', success: function ( json ) {
+              const keys = Object.keys(json);
+              var big = 0, big_enable = 0, big_disable = 0, mid = 0, mid_enable = 0, mid_disable = 0, lil = 0, lil_enable = 0, lil_disable = 0;
+              var reward_lil = 0, reward_mid = 0, reward_big = 0;
+              var burnAmount_lil = 0, burnAmount_mid = 0, burnAmount_big = 0;
+              for (var i = 0; i < keys.length; i++) {
+                const line = {}
+                line['address'] = keys[i];
+                const lineData = json[keys[i]].split(" ");
+                const noEmptyData = [];
+                for (var j = 0; j < lineData.length; j++) {
+                  if (lineData[j].length !== 0) {
+                    noEmptyData.push(lineData[j])
+                  }
+                }
+                line['status'] = noEmptyData[0].replace(/_/g, ' ').toLowerCase()
+                if (noEmptyData[8] == 1) { 
+                  lil++;
+                  reward_lil = noEmptyData[9];
+                  burnAmount_lil = noEmptyData[10];
+                  if (line['status'] == 'enabled') { lil_enable++; } else { lil_disable++; }
+                }
+                if (noEmptyData[8] == 5) { 
+                  mid++; 
+                  reward_mid = noEmptyData[9];
+                  burnAmount_mid = noEmptyData[10];
+                  if (line['status'] == 'enabled') { mid_enable++; } else { mid_disable++; }
+                }
+                if (noEmptyData[8] == 10) { 
+                  big++;
+                  reward_big = noEmptyData[9];
+                  burnAmount_big = noEmptyData[10];
+                  if (line['status'] == 'enabled') { big_enable++; } else { big_disable++; }
+                }
+              }
+              var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / ((720 / big_enable) * reward_big);
+              var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / ((720 / mid_enable) * reward_mid);
+              var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / ((720 / lil_enable) * reward_lil);
+              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + Math.floor(roi_big) + " days");
+              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + Math.floor(roi_mid) + " days");
+              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + Math.floor(roi_lil) + " days");
+          }});
+        };
+        setInterval( function() {
+          update_stats();
+        }, 60000);
+        update_stats();
+      }); 
+  .col-md-12(style="margin-bottom: 4%")
+    .row.text-center
+       .col-md-3
+         .panel.panel-default.hidden-sm.hidden-xs
+            <div class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC"></div>
+       .col-md-3
+          .panel.panel-default.hidden-sm.hidden-xs
+            .panel-heading
+              strong #{settings.locale.network}
+            .panel-body
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                      if settings.nethash_units == 'K'
+                        span #{settings.locale.hashrate} (KH/s)
+                      else if settings.nethash_units == 'M'
+                        span #{settings.locale.hashrate} (MH/s)
+                      else if settings.nethash_units == 'G'
+                        span #{settings.locale.hashrate} (GH/s)
+                      else if settings.nethash_units == 'T'
+                        span #{settings.locale.hashrate} (TH/s)
+                      else if settings.nethash_units == 'P'
+                        span #{settings.locale.hashrate} (PH/s)
+                      else if settings.nethash_units == 'H'
+                        span #{settings.locale.hashrate} (H/s)
+                    td
+                      if settings.index.difficulty == 'Hybrid'
+                        span#hashrate -
+                        span#lblX1
+                      else
+                        span#hashrate -
+                  tr
+                    td
+                      span #{settings.locale.difficulty}
+                    td
+                      span#difficulty -
+                  tr
+                    td
+                      span #{settings.locale.ex_supply}
+                    td
+                      span#supply -
+       .col-md-3
+          .panel.panel-default.hidden-sm.hidden-xs
+            .panel-heading
+              strong #{settings.locale.burn_stat}
+            .panel-body
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                        span #{settings.locale.burn_fee}
+                    td
+                        span#burnfee -
+                  tr
+                    td
+                      span #{settings.locale.burn_node}
+                    td
+                      span#burnnode -
+                  tr
+                    td
+                      span #{settings.locale.burn_total}
+                    td
+                      span#burntotal -
+       .col-md-3
+          .panel.panel-default.hidden-sm.hidden-xs
+            .panel-heading
+              strong #{settings.locale.infinitynode_stat}
+            .panel-body
+              table.table.table-bordered.summary-table
+                tbody
+                  tr
+                    td
+                        span #{settings.locale.infinitynode_n_big}
+                    td
+                        span#n_big -
+                  tr
+                    td
+                      span #{settings.locale.infinitynode_n_mid}
+                    td
+                      span#n_mid -
+                  tr
+                    td
+                      span #{settings.locale.infinitynode_n_lil}
+                    td
+                      span#n_lil -
+    .row.text-center(style='margin-bottom:15px;')
+       .col-md-6(style="margin-bottom: 4%; float: left; width: 50%")
+       .col-md-6(style="margin-bottom: 4%; float: right; width: 50%")
+        .row.text-center
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/animate.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/backgrounds.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/boilerplate.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/border-radius.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/grid.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/page-transitions.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/spacing.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/typography.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/utils.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/colors.css')
+           link(rel='stylesheet', href='/stylesheets/assets/frontend-elements/footer.css')
+           link(rel='stylesheet', href='/stylesheets/assets/snippets/todo.css')
+           link(rel='stylesheet', href='/stylesheets/assets/snippets/user-profile.css')
+           link(rel='stylesheet', href='/stylesheets/assets/snippets/mobile-navigation.css')
+           link(rel='stylesheet', href='/stylesheets/assets/themes/frontend/layout.css')
+           link(rel='stylesheet', href='/stylesheets/assets/themes/frontend/color-schemes/default.css')
+           link(rel='stylesheet', href='/stylesheets/assets/themes/components/default.css')
+           link(rel='stylesheet', href='/stylesheets/assets/themes/components/border-radius.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/responsive-elements.css')
+           link(rel='stylesheet', href='/stylesheets/assets/helpers/frontend-responsive.css')
+           script(src='https://d3js.org/d3.v3.min.js')
+           script(src='//d3js.org/topojson.v1.min.js')
+           script(src='//d3js.org/d3.geo.projection.v0.min.js')
+           script(src='//d3js.org/queue.v1.min.js')
+
+           div.row(id="mapcontainer" align="center")
+           link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
+           script(src='/javascripts/worldmap.v1.js')
+           script.
+             var createmap = new Worldmap({
+               elementid: "#mapcontainer",
+               width: $( window ).width()/2 - $( window ).width()/20,
+               height: $( window ).height()/3,
+               mapstyle: {
+                 ocean: "#ffffff",
+                 region: "pink",
+                 border : "transparent"
+               },
+               project: {  
+                 name: "Aitoff" 
+               },
+               showtable:false,
+               editpanel:false,
+               data: [
+                   //{name: 'Bubble 1', coordinates: [21.32,  -7.32], size: 45, color: 'red'},
+                   //{name: 'Bubble 4', coordinates: [-31.32, 23.32], size: 5, color: 'black'}
+               ],
+               plugin: "bubble",
+               defaultfill: "steelblue",
+               zoomable: false,
+               defaultsize: 30,
+             }); 
+             setTimeout(function(){
+               $.ajax({url: '/ext/dashboard', success: function(json){
+                 const data = [];
+                 const keys = Object.keys(json.data);
+                 for (var i = 0; i < keys.length; i++) {
+                   if (json.data[i].location == "SG") json.data[i].location = "MY";
+                   const item = {};
+                     item["location"] = json.data[i].location,
+                     item["LIL"] = ""+json.data[i].lil,
+                     item["MID"] = ""+json.data[i].mid,
+                     item["BIG"] = ""+json.data[i].big,
+                   data.push(item)
+                 }
+                 console.log(JSON.stringify(data));
+                 createmap.update(data, "barchart");
+               }})
+             }, 4000);
+             $(document).ready(function(){
+               $('#playeranim').css('display', 'none');
+             });
+
