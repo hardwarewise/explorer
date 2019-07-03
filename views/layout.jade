@@ -120,16 +120,12 @@ html
                 a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
                   span.menu-text #{settings.locale.menu_infinitynodes}
-div.row
-  div.col-md-12
-   .panel-body
-    .col-md-12
-      .row.text-center
-        .search(style='align:center;margin-top:5px;margin-bottom: 20px;')
-          form.form-inline(method='post', action='/search')
-            #index-search.form-group
-              input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
-              button.btn.btn-success(type='submit') #{settings.locale.ex_search_button}
+        .collapse.navbar-collapse(id='navbar-collapse' style='float:left;width:500px;')
+            .search(style='align:center;margin-top:5px;margin-bottom: 5px;')
+              form.form-inline(method='post', action='/search')
+                #index-search.form-group
+                  input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
+                  button.btn.btn-success(type='submit') #{settings.locale.ex_search_button}
     block content
     .navbar.navbar-default.navbar-fixed-bottom.hidden-xs
       .col-md-4
