@@ -126,6 +126,12 @@ app.use('/ext/dashboard', function(req,res){
   });
 });
 
+app.use('/ext/nodelist', function(req,res){
+  db.get_nodes(function(get_nodes){
+    res.send({data: get_nodes});
+  });
+});
+
 app.use('/ext/gettermdepositstats', function(req,res){
   db.get_termdepositstats(function(termdepositstats){
     res.send({"nAddress": termdepositstats[0].term_deposit_wallets, "nTimeLockedTxs": termdepositstats[0].term_deposit_txs, "nTotalTimeLockedValue": termdepositstats[0].term_deposit_total});
