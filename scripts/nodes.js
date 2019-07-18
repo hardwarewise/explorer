@@ -45,11 +45,8 @@ mongoose.connect(dbString, function(err) {
              var burnTx = noEmptyData[11].split('-')[0];
              var burnTxIndex = noEmptyData[11].split('-')[1];
              request({uri: 'https://api.ipgeolocation.io/ipgeo?apiKey=04515697f2ad44ddb42916c824f6261f&ip=' + ip, json: true}, function (error, response, geo) {
-              console.log("find tx: " + burnTx);
               db.get_tx(burnTx, function(tx) {
-                console.log("finding...");
                 if (tx) {
-                  console.log("found!");
                   console.log(tx);
                   db.create_node({
                     address: address,
@@ -61,13 +58,12 @@ mongoose.connect(dbString, function(err) {
                     type: noEmptyData[8],
                     reward: noEmptyData[9],
                     burnfund: noEmptyData[10],
-                    expire_height: "unknown",
+                    expire_height: tx.blockindex + 720 * 365,
                     country: geo.country_code2
                   }, function(){
                     loop.next();
                   });
                 }else{
-                  console.log("not found...");
                   loop.next();
                 }
               });
