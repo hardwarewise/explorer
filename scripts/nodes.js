@@ -1,6 +1,7 @@
 var mongoose = require('mongoose')
   , lib = require('../lib/explorer')
   , db = require('../lib/database')
+  , Tx = require('../models/tx')
   , settings = require('../lib/settings')
   , request = require('request');
 
@@ -41,21 +42,34 @@ mongoose.connect(dbString, function(err) {
                   }
                 }
              var ip = noEmptyData[7].split(':')[0];
+             var burnTx = noEmptyData[11].split('-')[0];
+             var burnTxIndex = noEmptyData[11].split('-')[1];
              request({uri: 'https://api.ipgeolocation.io/ipgeo?apiKey=04515697f2ad44ddb42916c824f6261f&ip=' + ip, json: true}, function (error, response, geo) {
-              db.create_node({
-                address: address,
-                status: noEmptyData[0].replace(/_/g, ' ').toLowerCase(),
-                protocol: noEmptyData[1],
-                last_seen: noEmptyData[3],
-                active_time: noEmptyData[4],
-                ip: ip,
-                type: noEmptyData[8],
-                reward: noEmptyData[9],
-                burnfund: noEmptyData[10],
-                expire_height: "unknown",
-                country: geo.country_code2
-              }, function(){
-                loop.next();
+              console.log("find tx: " + burnTx);
+              db.get_tx(burnTx, function(tx) {
+                console.log("finding...");
+                if (tx) {
+                  console.log("found!");
+                  console.log(tx);
+                  db.create_node({
+                    address: address,
+                    status: noEmptyData[0].replace(/_/g, ' ').toLowerCase(),
+                    protocol: noEmptyData[1],
+                    last_seen: noEmptyData[3],
+                    active_time: noEmptyData[4],
+                    ip: ip,
+                    type: noEmptyData[8],
+                    reward: noEmptyData[9],
+                    burnfund: noEmptyData[10],
+                    expire_height: "unknown",
+                    country: geo.country_code2
+                  }, function(){
+                    loop.next();
+                  });
+                }else{
+                  console.log("not found...");
+                  loop.next();
+                }
               });
             });
           }

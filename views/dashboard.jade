@@ -171,6 +171,7 @@ block content
                       span#n_totalnode -
     .row.text-center(style='margin-bottom:15px;')
        .col-md-6(style="margin-bottom: 4%; float: left; width: 50%")
+         div#pieLIL(style="width:300px;height:305px;margin:0px;")
        .col-md-6(style="margin-bottom: 4%; float: right; width: 50%")
         .row.text-center
            link(rel='stylesheet', href='/stylesheets/assets/helpers/animate.css')
@@ -198,18 +199,18 @@ block content
            script(src='//d3js.org/d3.geo.projection.v0.min.js')
            script(src='//d3js.org/queue.v1.min.js')
 
-           div.row(id="mapcontainer" align="center" style="border:solid;")
+           div.row(id="mapcontainer" align="center" style="border:solid;border-width:1px;border-color:white;")
            link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
            script(src='/javascripts/worldmap.v1.js')
            script.
              var createmap = new Worldmap({
                elementid: "#mapcontainer",
                width: $( window ).width()/2 - $( window ).width()/20,
-               height: $( window ).height()/3,
+               height: 400,
                mapstyle: {
                  ocean: "transparent",
                  region: "#485563",
-                 border : "red"
+                 border : "white"
                },
                project: {  
                  name: "Aitoff" 
@@ -224,7 +225,40 @@ block content
                defaultfill: "steelblue",
                zoomable: false,
                defaultsize: 30,
-             }); 
+             });
+             var randomScalingFactor = function() {
+               return Math.round(Math.random() * 100);
+             };
+             var config = {
+               type: 'pie',
+               data: {
+                 datasets: [{
+                   data: [
+                     randomScalingFactor(),
+                     randomScalingFactor(),
+                     randomScalingFactor(),
+                     randomScalingFactor(),
+                     randomScalingFactor(),
+                   ],
+                   backgroundColor: [
+                   ],
+                   label: 'Dataset 1'
+                 }],
+                 labels: [
+                   'Red',
+                   'Orange',
+                   'Yellow',
+                   'Green',
+                   'Blue'
+                 ]
+               },
+               options: {
+                 responsive: true
+               }
+             };
+             $(document).ready(function(){
+               $('#playeranim').css('display', 'none');
+             });
              setTimeout(function(){
                $.ajax({url: '/ext/dashboard', success: function(json){
                  const data = [];
@@ -238,11 +272,7 @@ block content
                      item["BIG"] = ""+json.data[i].big,
                    data.push(item)
                  }
-                 console.log(JSON.stringify(data));
                  createmap.update(data, "barchart");
                }})
              }, 4000);
-             $(document).ready(function(){
-               $('#playeranim').css('display', 'none');
-             });
 
