@@ -90,8 +90,12 @@ function route_get_tx(res, txid) {
   }
 }
 
-function route_get_index(res, error) {
+function route_get_dashboard(res, error) {
   res.render('dashboard', { active: 'dashboard', error: error, warning: null});
+}
+
+function route_get_index(res, error) {
+  res.render('index', { active: 'index', error: error, warning: null});
 }
 
 function route_get_address(res, hash, count) {
@@ -125,7 +129,7 @@ function route_get_address(res, hash, count) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  route_get_index(res, null);
+  route_get_dashboard(res, null);
 });
 
 router.get('/info', function(req, res) {

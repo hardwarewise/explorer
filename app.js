@@ -181,41 +181,7 @@ app.use('/ext/pool-stats', async function (req, res) {
     data: data
   });
 });
-/* replaced by "nodelis" which call from plat json file
-app.use('/ext/masternodelist', async function (req, res) {
-  const axios = require('axios');
-  const moment = require('moment');
-  const now = moment().unix();
-  const base_url = 'http://127.0.0.1:' + settings.port + '/api/';
-  const NodeCache = require('node-cache');
-  const ttl = 60 * 60 * 1; // cache for 1 Hour
-  const mycache = new NodeCache({stdTTL: ttl, checkperiod: ttl * 0.2, useClones: false});
-  const getCacheValue = (key, storeFunction) => {
-    const value = mycache.get(key);
-    if (value) {
-      return Promise.resolve(value);
-    }
 
-    return storeFunction().then((result) => {
-      mycache.set(key, result);
-      return result;
-    });
-  }
-
-  async function getInfinityNodes() {
-    return axios.get(base_url + 'masternodelist?mode=info');
-  }
-  const response = await getCacheValue('infinitynodes', () => {
-    return getInfinityNodes();
-  }).then((result) => {
-    return result
-  })
-
-  res.send({
-    data: response.data
-  });
-});
-*/
 // locals
 app.set('title', settings.title);
 app.set('symbol', settings.symbol);
