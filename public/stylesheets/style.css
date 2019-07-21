@@ -165,3 +165,21 @@ tr {
 	position: absolute;
 	bottom: 0px;
 }
+
+#barExpiredHeight .jqplot-point-label {
+  border: 1.5px solid #aaaaaa;
+  padding: 1px 3px;
+  background-color: #eeccdd;
+}
+
+#barTxStatsValue .jqplot-point-label {
+  border: 1.5px solid #aaaaaa;
+  padding: 1px 3px;
+  background-color: #eeccdd;
+}
+
+#barTxStatsNumber .jqplot-point-label {
+  border: 1.5px solid #aaaaaa;
+  padding: 1px 3px;
+  background-color: #eeccdd;
+}

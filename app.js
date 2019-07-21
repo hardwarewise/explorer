@@ -9,6 +9,7 @@ var express = require('express')
   , routes = require('./routes/index')
   , lib = require('./lib/explorer')
   , db = require('./lib/database')
+  , Nodes = require('./models/nodes')
   , locale = require('./lib/locale')
   , request = require('request');
 
@@ -120,6 +121,12 @@ app.use('/ext/connections', function(req,res){
   });
 });
 
+app.use('/ext/txstats/:height', function(req,res){
+  db.get_tx_stats(req.param('height'), function(txstats){
+    res.send({data: txstats});
+  });
+});
+
 app.use('/ext/dashboard', function(req,res){
   db.get_locationnodes(function(get_locationnodes){
     res.send({data: get_locationnodes});
@@ -129,6 +136,12 @@ app.use('/ext/dashboard', function(req,res){
 app.use('/ext/nodelist', function(req,res){
   db.get_nodes(function(get_nodes){
     res.send({data: get_nodes});
+  });
+});
+
+app.use('/ext/nodeexpire', function(req,res){
+  db.get_node_expire(function(expire){
+    res.send({data: expire});
   });
 });
 
