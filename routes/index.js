@@ -187,6 +187,7 @@ router.get('/summary', function(req, res) {
 						"lastPrice":0,
 						"connections":0,
 						"blockcount":0,
+						"explorerHeight": 0,
 						"burnFee":0,
 						"burnNode":0};
 	try {
@@ -201,6 +202,7 @@ router.get('/summary', function(req, res) {
 					lastPrice: summarystats.data[0].lastPrice,
 					connections: summarystats.data[0].connections,
 					blockcount: summarystats.data[0].blockcount,
+					explorerHeight: summarystats.data[0].explorerHeight,
 					burnFee: summarystats.data[0].burnFee,
 					burnNode: summarystats.data[0].burnNode
 			});
@@ -497,6 +499,7 @@ router.get('/ext/summary', function(req, res) {
 				  lastPrice: stats.last_price,
 				  connections: connections,
 				  blockcount: blockcount,
+                  explorerHeight: stats.last,
 				  burnFee: termdepositstats.nBurnFee,
 				  burnNode: termdepositstats.nBurnNode
 				}]});
