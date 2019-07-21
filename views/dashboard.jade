@@ -15,7 +15,7 @@ block content
             $("#hashrate").text(json.hashrate);
             $("#lastPrice").text(json.lastPrice.toFixed(8));
             $("#lblConnections").text(json.connections + ' connections');
-            $("#lblBlockcount").text(json.blockcount);
+            $("#lblBlockcount").text(json.explorerHeight + '/' + json.blockcount);
             $("#lblX1").text(' ');
             $("#burnfee").text(json.burnFee);
             $("#burnnode").text(json.burnNode);
