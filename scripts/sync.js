@@ -9,6 +9,8 @@ var mongoose = require('mongoose')
 
 var mode = 'update';
 var database = 'index';
+var checkBegin = 1;
+var checkEnd = 1;
 
 // displays usage and exits
 function usage() {
@@ -50,6 +52,9 @@ if (process.argv[2] == 'index') {
       break;
     default:
       usage();
+    }
+    if (mode == 'check' && process.argv[4] > 0){
+       checkBegin = process.argv[4];
     }
   }
 } else if (process.argv[2] == 'market'){
@@ -169,7 +174,7 @@ is_locked(function (exists) {
                       });
                     });              
                   } else if (mode == 'check') {
-                    db.update_tx_db(settings.coin, 1, stats.count, settings.check_timeout, function(){
+                    db.update_tx_db(settings.coin, 191000, stats.count, settings.check_timeout, function(){
                       db.get_stats(settings.coin, function(nstats){
                         console.log('check complete (block: %s)', nstats.last);
                         exit();

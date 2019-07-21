@@ -12,7 +12,7 @@ var NodesSchema = new Schema({
   type: { type: String, default: "" },
   reward: { type: String, default: "" },
   burnfund: { type: String, default: "" },
-  expire_height: { type: String, default: "" },
+  expire_height: { type: Number, default: 0 },
   country: { type: String, default: "" }
 });
 
