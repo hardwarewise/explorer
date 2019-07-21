@@ -32,7 +32,7 @@ block content
                  }
                  $("#barTxStatsValue").text('');
                  plot1 = $.jqplot('barTxStatsValue', [vTx], {
-                   title: 'Transaction values (SIN)',
+                   title: 'Transaction values (SIN) per day',
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },
@@ -48,19 +48,9 @@ block content
                      }
                    }
                  });
-                 $('#barTxStatsValue').bind('jqplotDataHighlight',
-                   function (ev, seriesIndex, pointIndex, data) {
-                     $('#infoTxStatsValue').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-                   }
-                 );
-                 $('#barTxStatsValue').bind('jqplotDataUnhighlight',
-                   function (ev) {
-                     $('#infoTxStatsValue').html('Nothing');
-                   }
-                 );
                  $("#barTxStatsNumber").text('');
                  plot3 = $.jqplot('barTxStatsNumber', [nTx], {
-                   title: 'Transactions',
+                   title: 'Transactions per day',
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },
@@ -76,17 +66,7 @@ block content
                      }
                    }
                  });
-                 $('#barTxStatsNumber').bind('jqplotDataHighlight',
-                   function (ev, seriesIndex, pointIndex, data) {
-                     $('#infoTxStatsNumber').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-                   }
-                 );
-                 $('#barTxStatsNumber').bind('jqplotDataUnhighlight',
-                   function (ev) {
-                     $('#infoTxStatsNumber').html('Nothing');
-                   }
-                 );
-            }});
+             }});
           }});
           $.ajax({url: '/nodelist', success: function ( json ) {
               const keys = Object.keys(json);
@@ -238,11 +218,8 @@ block content
                       span#n_totalnode -
     .row.text-center(style='margin-bottom:15px;')
        .col-md-6(style="margin-bottom: 4%; float: left; width: 48%; valign: bottom;padding: 10px 10px 10px 10px;")
-         div#infoBar
          div#barExpiredHeight
-         div#infoTxStatsValue
          div#barTxStatsValue
-         div#infoTxStatsNumber
          div#barTxStatsNumber
        .col-md-6(style="margin-bottom: 4%; float: right; width: 48%;padding: 10px 10px 10px 10px;")
         .row.text-center
@@ -340,7 +317,7 @@ block content
                    ticks.push(json.data[i].range);
                  }
                  plot2 = $.jqplot('barExpiredHeight', [s], {
-                   title: 'Infinity node expire height',
+                   title: 'Infinity node expire height / 2 Weeks creation',
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },
@@ -356,16 +333,6 @@ block content
                      }
                    }
                  });
-                 $('#barExpiredHeight').bind('jqplotDataHighlight',
-                   function (ev, seriesIndex, pointIndex, data) {
-                     $('#infoBar').html('series: '+seriesIndex+', point: '+pointIndex+', data: '+data);
-                   }
-                 );
-                 $('#barExpiredHeight').bind('jqplotDataUnhighlight',
-                   function (ev) {
-                     $('#infoBar').html('Nothing');
-                   }
-                 );
                }});
              });
              //worldmap
