@@ -174,7 +174,7 @@ is_locked(function (exists) {
                       });
                     });              
                   } else if (mode == 'check') {
-                    db.update_tx_db(settings.coin, 191000, stats.count, settings.check_timeout, function(){
+                    db.update_tx_db(settings.coin, 170000, stats.count, settings.check_timeout, function(){
                       db.get_stats(settings.coin, function(nstats){
                         console.log('check complete (block: %s)', nstats.last);
                         exit();
