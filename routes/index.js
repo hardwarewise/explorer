@@ -270,48 +270,28 @@ router.get('/nodelist', function(req, res) {
 
 router.get('/poollist', function(req, res) {
 	const data = [];
-	for(const pool in settings.pools) {
-		var poollistFilename = settings.pools[pool].pool_name + ".json";
-		poollistFilename = "./" + poollistFilename;
-
-		var poolliststatsStr;
-		try{
-			//read the settings sync
-			poolliststatsStr = fs.readFileSync(poollistFilename).toString();
-		} catch(e){
-			console.warn('No stats file found. Continuing using defaults!');
-			continue;
-		}
-
-		var poolliststats = {"":""};
-		try {
-			if(poolliststatsStr) {
-				poolliststatsStr = jsonminify(poolliststatsStr).replace(",]","]").replace(",}","}");
-				poolliststats = JSON.parse(poolliststatsStr);
+	db.get_pools(function(pools){
+		if (pools){
+			var count = pools.length;
+			lib.syncLoop(count, function (loop) {
+				var i = loop.iteration();
 				data.push({
-					pool_name: settings.pools[pool].pool_name,
-					homepage: settings.pools[pool].homepage,
-					block_height: poolliststats.SIN['height'],
-					workers: poolliststats.SIN['workers'],
-					blocks_in_24h: poolliststats.SIN['24h_blocks'],
-					last_block: poolliststats.SIN['lastblock'],
-					pool_hashrate: poolliststats.SIN['hashrate'],
-					"SIN": poolliststats.SIN
+					createdAt: pools[i].createdAt,
+					pool_name: pools[i].pool_name,
+					homepage: pools[i].homepage,
+					block_height: pools[i].block_height,
+					workers: pools[i].workers,
+					blocks_in_24h: pools[i].blocks_in_24h,
+					last_block: pools[i].last_block,
+					pool_hashrate: pools[i].pool_hashrate
 				});
-			}else{
-				data.push({
-					poolliststats
-				});
-			}
-		}catch(e){
-			data.push({
-					poolliststats
+ 				loop.next();
+			}, function(){
+				res.send({data: data});
 			});
+		} else {
+			route_get_index(res, 'Pool list not found in database');
 		}
-	}
-
-	res.send({
-		data: data
 	});
 });
 
@@ -385,7 +365,6 @@ router.get('/dashboard', function(req, res) {
 
 router.get('/reward', function(req, res){
   //db.get_stats(settings.coin, function (stats) {
-    console.log(stats);
     db.get_heavy(settings.coin, function (heavy) {
       //heavy = heavy;
       var votes = heavy.votes;
