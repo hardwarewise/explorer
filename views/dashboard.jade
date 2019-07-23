@@ -7,12 +7,14 @@ block content
         function update_stats(){
           var supply = 0;
           var burnt = 0;
+          var hashrate = 0;
           $.ajax({url: '/summary', success: function(json){
             $("#supply").text(json.supply);
             supply = json.supply;
             $("#difficulty").text(json.difficulty);
             $("#difficultyHybrid").text(json.difficultyHybrid);
             $("#hashrate").text(json.hashrate);
+            hashrate = json.hashrate;
             $("#lastPrice").text(json.lastPrice.toFixed(8));
             $("#lblConnections").text(json.connections + ' connections');
             $("#lblBlockcount").text(json.explorerHeight + '/' + json.blockcount);
@@ -20,6 +22,14 @@ block content
             $("#burnfee").text(json.burnFee);
             $("#burnnode").text(json.burnNode);
             $("#burntotal").text(json.burnFee + json.burnNode);
+            $.ajax({url: '/poollist', success: function(json){
+              var totalKnownHash = 0;
+              for (var i = 0; i < json.data.length; i++) {
+                totalKnownHash = totalKnownHash + json.data[i]['pool_hashrate'];
+              }
+              var KnownHash = (totalKnownHash/1000000000).toFixed(2);
+              $("#hashrate").text(KnownHash+ '/' + hashrate + ' GH/s');
+            }});
             $.ajax({url: '/ext/txstats/'+json.blockcount, success: function(json){
                  var nTx=[];
                  var vTx=[];

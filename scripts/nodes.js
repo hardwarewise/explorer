@@ -47,7 +47,7 @@ mongoose.connect(dbString, function(err) {
              request({uri: 'https://api.ipgeolocation.io/ipgeo?apiKey=04515697f2ad44ddb42916c824f6261f&ip=' + ip, json: true}, function (error, response, geo) {
               db.get_tx(burnTx, function(tx) {
                 if (tx) {
-                  console.log("Add node: " + burnTx)
+                  console.log("Add node: " + burnTx);
                   db.create_node({
                     address: address,
                     status: noEmptyData[0].replace(/_/g, ' ').toLowerCase(),
