@@ -127,6 +127,14 @@ app.use('/ext/txstats/:height', function(req,res){
   });
 });
 
+app.use('/ext/addressstats', function(req,res){
+  db.get_address_stats('count', function(counts){
+    db.get_address_stats('top', function(top){
+      res.send({addresses: counts.addresses, active: counts.active_addresses, top10: top.top10, top50: top.top50});
+    });
+  });
+});
+
 app.use('/ext/dashboard', function(req,res){
   db.get_locationnodes(function(get_locationnodes){
     res.send({data: get_locationnodes});
