@@ -17,18 +17,22 @@ block content
             hashrate = json.hashrate;
             $("#lastPrice").text(json.lastPrice.toFixed(8));
             $("#lblConnections").text(json.connections + ' connections');
-            $("#lblBlockcount").text(json.explorerHeight + '/' + json.blockcount);
+            $("#lblBlockcount").text(json.explorerHeight + ' / ' + json.blockcount);
             $("#lblX1").text(' ');
             $("#burnfee").text(json.burnFee);
             $("#burnnode").text(json.burnNode);
             $("#burntotal").text(json.burnFee + json.burnNode);
+            $("#explorerAddresses").text(json.explorerAddresses);
+            $("#explorerActiveAddresses").text(json.explorerActiveAddresses);
+            $("#explorerTop10").text(json.explorerTop10);
+            $("#explorerTop50").text(json.explorerTop50);
             $.ajax({url: '/poollist', success: function(json){
               var totalKnownHash = 0;
               for (var i = 0; i < json.data.length; i++) {
                 totalKnownHash = totalKnownHash + json.data[i]['pool_hashrate'];
               }
               var KnownHash = (totalKnownHash/1000000000).toFixed(2);
-              $("#hashrate").text(KnownHash+ '/' + hashrate + ' GH/s');
+              $("#hashrate").text(KnownHash+ ' / ' + hashrate + '');
             }});
             $.ajax({url: '/ext/txstats/'+json.blockcount, success: function(json){
                  var nTx=[];
@@ -133,7 +137,6 @@ block content
       }); 
   .col-md-12(style="margin-bottom: 4%")
     .row.text-center
-       .col-md-3(class="coinmarketcap-currency-widget" data-currencyid="3514" data-base="USD"  data-secondary="BTC")
        .col-md-3
           .panel.panel-default(style='background-color:transparent;')
             .panel-heading
@@ -176,6 +179,33 @@ block content
                       span #{settings.locale.height}
                     td
                       span#lblBlockcount -
+       .col-md-3
+          .panel.panel-default(style='background-color:transparent;')
+            .panel-heading
+              strong #{settings.locale.addresses_stat}
+            .panel-body
+              table.table.table-bordered.summary-table(style="background:transparent;")
+                tbody
+                  tr
+                    td
+                        span #{settings.locale.nb_addresses}
+                    td
+                        span#explorerAddresses -
+                  tr
+                    td
+                      span #{settings.locale.active_addresses}
+                    td
+                      span#explorerActiveAddresses -
+                  tr
+                    td
+                      span #{settings.locale.top10_addresses}
+                    td
+                      span#explorerTop10 -
+                  tr
+                    td
+                      span #{settings.locale.top50_addresses}
+                    td
+                      span#explorerTop50 -
        .col-md-3
           .panel.panel-default(style='background-color:transparent;')
             .panel-heading

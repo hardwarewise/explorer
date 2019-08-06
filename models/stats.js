@@ -11,6 +11,10 @@ var StatsSchema = new Schema({
   //last_txs: { type: Array, default: [] },
   connections: { type: Number, default: 0 },
   last_price: { type: Number, default: 0 },
+  addresses: { type: Number, default: 0 },
+  active_addresses: { type: Number, default: 0 },
+  top10: { type: Number, default: 0 },
+  top50: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);

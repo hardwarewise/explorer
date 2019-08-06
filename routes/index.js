@@ -188,6 +188,10 @@ router.get('/summary', function(req, res) {
 						"connections":0,
 						"blockcount":0,
 						"explorerHeight": 0,
+						"explorerAddresses": 0,
+						"explorerActiveAddresses": 0,
+						"explorerTop10": 0,
+						"explorerTop50": 0,
 						"burnFee":0,
 						"burnNode":0};
 	try {
@@ -203,6 +207,10 @@ router.get('/summary', function(req, res) {
 					connections: summarystats.data[0].connections,
 					blockcount: summarystats.data[0].blockcount,
 					explorerHeight: summarystats.data[0].explorerHeight,
+					explorerAddresses: summarystats.data[0].explorerAddresses,
+					explorerActiveAddresses: summarystats.data[0].explorerActiveAddresses,
+					explorerTop10: summarystats.data[0].explorerTop10,
+					explorerTop50: summarystats.data[0].explorerTop50,
 					burnFee: summarystats.data[0].burnFee,
 					burnNode: summarystats.data[0].burnNode
 			});
@@ -479,8 +487,12 @@ router.get('/ext/summary', function(req, res) {
 				  connections: connections,
 				  blockcount: blockcount,
                   explorerHeight: stats.last,
-				  burnFee: termdepositstats.nBurnFee,
-				  burnNode: termdepositstats.nBurnNode
+                  explorerAddresses: stats.addresses,
+                  explorerActiveAddresses: stats.active_addresses,
+                  explorerTop10: stats.top10,
+                  explorerTop50: stats.top50,
+                  burnFee: termdepositstats.nBurnFee,
+                  burnNode: termdepositstats.nBurnNode
 				}]});
 		  	});
           });
