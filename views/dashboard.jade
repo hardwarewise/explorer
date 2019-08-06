@@ -47,6 +47,8 @@ block content
                  $("#barTxStatsValue").text('');
                  plot1 = $.jqplot('barTxStatsValue', [vTx], {
                    title: 'Transaction values (SIN) per day',
+                   seriesColors:['#FF3333'],
+                   grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },
@@ -65,6 +67,8 @@ block content
                  $("#barTxStatsNumber").text('');
                  plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
+                   seriesColors:['#73C774'],
+                   grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },
@@ -138,7 +142,7 @@ block content
             .panel-heading
               strong #{settings.locale.network}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color:transparent;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr
                     td
@@ -207,7 +211,7 @@ block content
             .panel-heading
               strong #{settings.locale.burn_stat}
             .panel-body
-              table.table.table-bordered.summary-table(style="background:transparent;")
+              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr
                     td
@@ -230,37 +234,39 @@ block content
                     td
                       span#supply -
        .col-md-3
-          .panel.panel-default(style='background-color:transparent;')
+          .panel.panel-default(style='background-color:transparent')
             .panel-heading
               strong #{settings.locale.infinitynode_stat}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color:transparent;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
+                  tr  
+                    td
+                        span(style='color:#ffd700')  #{settings.locale.infinitynode_n_big}
+                    td
+                        span(style='color:#ffd700')#n_big - 
                   tr
                     td
-                        span #{settings.locale.infinitynode_n_big}
+                      span(style='color:#c0c0c0') #{settings.locale.infinitynode_n_mid}
                     td
-                        span#n_big -
+                      span(style='color:#c0c0c0')#n_mid -
                   tr
                     td
-                      span #{settings.locale.infinitynode_n_mid}
+                      span(style='color:#cd7f32') #{settings.locale.infinitynode_n_lil}
                     td
-                      span#n_mid -
+                      span(style='color:#cd7f32')#n_lil -
                   tr
                     td
-                      span #{settings.locale.infinitynode_n_lil}
+                      span(style='font-size:16px') #{settings.locale.total}
                     td
-                      span#n_lil -
-                  tr
-                    td
-                      span #{settings.locale.total}
-                    td
-                      span#n_totalnode -
+                      span(style='font-size:16px')#n_totalnode -
     .row.text-center(style='margin-bottom:15px;')
        .col-md-6(style="margin-bottom: 4%; float: left; width: 48%; valign: bottom;padding: 10px 10px 10px 10px;")
-         div#barExpiredHeight
-         div#barTxStatsValue
-         div#barTxStatsNumber
+         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barExpiredHeight
+         br
+         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsValue
+         br
+         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsNumber
        .col-md-6(style="margin-bottom: 4%; float: right; width: 48%;padding: 10px 10px 10px 10px;")
         .row.text-center
            link(rel='stylesheet', href='/stylesheets/assets/helpers/animate.css')
@@ -287,7 +293,7 @@ block content
            script(src='//d3js.org/topojson.v1.min.js')
            script(src='//d3js.org/d3.geo.projection.v0.min.js')
            script(src='//d3js.org/queue.v1.min.js')
-           div.row(id="mapcontainer" align="center" style="border:solid;border-width:1px;border-color:white;")
+           div.row(id="mapcontainer" align="center" style="background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;")
            link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
            script(src='/javascripts/worldmap.v1.js')
            script(src='/javascripts/jqplot.pointLabels.js')
@@ -358,6 +364,8 @@ block content
                  }
                  plot2 = $.jqplot('barExpiredHeight', [s], {
                    title: 'Infinity node expire height / 2 Weeks creation',
+                   seriesColors:['#FF8204'],
+                   grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
                    },

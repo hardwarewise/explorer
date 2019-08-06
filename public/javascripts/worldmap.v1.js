@@ -2214,6 +2214,9 @@ dataload.forEach(function(d, i) {
 var names = settings.keys[1];
 var data = [{}];
 var region=findCoordinatesAndArea(features,locations,path);
+//BEGIN: this is change for SIN explorer color
+var color = d3.scale.ordinal().range(["#cd7f32", "#c0c0c0", "#ffd700", "#ff8c00"]);
+//END
 //var position=projection([21.32,-7.32]); +
 for(var j = 0; j < locations.length; j++) {
 if (typeof region[j] === 'undefined') { continue; }
@@ -2234,7 +2237,8 @@ for(var i = 0; i < values[j].length; i++) {
     var datum = {
         location: locations[j],
         value : values[j][i],
-        colour : settings.colorscale((names[i])),
+        //colour : settings.colorscale((names[i])),
+        colour: color((names[i])),
         name: names[i],
         x: xOffset,
         y: yOffset
@@ -2290,12 +2294,15 @@ if(type==="clor"){
   .attr('fill-opacity', function(d,i) {return (d/(domain[4]-domain[0]));})
 }
 if(type==="bar"){
+  //BEGIN: this is change for SIN explorer color
+  var color = d3.scale.ordinal().range(["#cd7f32", "#c0c0c0", "#ffd700", "#ff8c00"]);
   legend.append("rect")
   .attr("x", 20)
   .attr("y", function(d, i){ return settings.height - (i*ls_h) - 2*ls_h;})
   .attr("width", ls_w)
   .attr("height", ls_h)
-  .style("fill", function(d){ return settings.colorscale(d); });
+  .style("fill", function(d){ return color(d); });
+  //.style("fill", function(d){ return settings.colorscale(d); });
 }
 
 

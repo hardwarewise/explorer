@@ -14,8 +14,8 @@ body .content-box-header > .ui-tabs-nav li.ui-tabs-active > a:hover,
 .pagination > li > span,
 .btn-link,
 a {
-    color: #8da0aa;
-}
+    color: #ffffff;
+	}
 /* Primary font color */
 
 .tabs-nav li a:hover,
@@ -104,6 +104,7 @@ li.active a.list-group-item:focus,
 #nav-toggle span:after {
     color: #fff;
     background: #00bca4;
+	
 }
 
 .font-secondary,
@@ -198,7 +199,7 @@ div.selector,
 .jvectormap-zoomout,
 .posts-list li,
 .border-default {
-    border-color: #dfe8f1;
+    border-color: transparent;
 }
 .nav-divider,
 .divider,

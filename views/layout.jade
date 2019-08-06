@@ -65,7 +65,7 @@ html
       - var time = date + suffix + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
       - return time
     -  };
-    .nav.navbar.navbar-default.navbar-fixed-top(role='navigation')
+    .nav.navbar.navbar-default.navbar-fixed-top(role='navigation', style='background-color: #121416;color: #353c42; font-size:14px; font-weight:bold;padding-left: 50px;')
       .container-fluid
         .navbar-header(style='float:left;')
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
@@ -73,7 +73,9 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') #{settings.title}
+          a.navbar-brand(href='https://sinovate.io', target='_blank')
+            img(src="/images/logo.png",)
+            
         .collapse.navbar-collapse(id='navbar-collapse' style='float:left;')
           ul.nav.navbar-nav
             li#home
@@ -120,14 +122,14 @@ html
                 a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
                   span.menu-text #{settings.locale.menu_infinitynodes}
-        .collapse.navbar-collapse(id='navbar-collapse' style='float:left;width:600px;')
+        .collapse.navbar-collapse(id='navbar-collapse' style='float:left;width:600px;padding-left: 50px')
             .search(style='align:center;margin-top:5px;margin-bottom: 5px;')
               form.form-inline(method='post', action='/search')
                 #index-search.form-group
                   input.form-control(type='text', name='search', placeholder='#{settings.locale.ex_search_message}', style='min-width:80%;margin-right:5px;')
-                  button.btn.btn-success(type='submit') #{settings.locale.ex_search_button}
+                  button.btn.btn-success(type='submit', style='background-color:#f5332f; border: none; border-radius: 10px') #{settings.locale.ex_search_button}
     block content
-    .navbar.navbar-default.navbar-fixed-bottom.hidden-xs
+    .navbar.navbar-default.navbar-fixed-bottom.hidden-xs(style='background-color: #121416;color: #353c42; font-size:14px; font-weight:bold;padding-left: 50px;')
       .col-md-4
         if settings.display.twitter
           ul.nav.navbar-nav
@@ -149,11 +151,12 @@ html
             li.pull-left
               a#youtube-icon(href="https://www.youtube.com/channel/#{settings.youtube}", target='_blank')
                 span.glyphicon.fa.fa-youtube
-     .col-md-4
-        ul.nav
-          li.text-center(style='margin-left:80px;margin-right:80px;')
-            p(style='margin-top:15px;')
-              a.navbar-link(href='https://github.com/iquidus/explorer', target='_blank') Powered by Iquidus Explorer
-      span.connections
-        label#lblBlockcount.label.label-default -
-        label#lblConnections.label.label-default -
+     .col-md-1
+        block intro
+ .container
+      div(id="images")
+         center
+             img(alt="sinovate", src="/images/sinlogo.png", width="160", margin-top="0", style="text-align:middle")
+      //span.connections
+        //label#lblBlockcount.label.label-default -
+        //label#lblConnections.label.label-default -
