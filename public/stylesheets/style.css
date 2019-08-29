@@ -1,9 +1,10 @@
 body {
   padding: 80px 40px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-   background-image: url('/images/bg.png');
-   background-size:cover;
-   /*background-image: linear-gradient(to bottom, #051937, #102346, #1c2c56, #283766, #354176);*/
+background: rgb(2,0,36);
+background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(25,27,65,1) 35%, rgba(13,13,26,1) 100%); 
+background-repeat: no-repeat;
+background-attachment: fixed;
 }
 
 #index-search {

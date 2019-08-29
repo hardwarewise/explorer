@@ -168,6 +168,31 @@ router.get('/gettermdepositstats', function(req, res) {
 	}
 });
 
+router.get('/getblockcount', function(req, res) {
+    var summarystatsFilename = "summary.json";
+	summarystatsFilename = "./" + summarystatsFilename;
+
+	var summarystatsStr;
+	try{
+		//read the settings sync
+		summarystatsStr = fs.readFileSync(summarystatsFilename).toString();
+	} catch(e){
+		console.warn('No stats file found. Continuing using defaults!');
+	}
+	var summarystats = {"blockcount": -1};
+	try {
+		if(summarystatsStr) {
+			summarystatsStr = jsonminify(summarystatsStr).replace(",]","]").replace(",}","}");
+			summarystats = JSON.parse(summarystatsStr);
+			res.send(''+summarystats.data[0].blockcount);
+		}else{
+			res.send('');
+		}
+	}catch(e){
+		res.send('');
+	}
+});
+
 router.get('/summary', function(req, res) {
     var summarystatsFilename = "summary.json";
 	summarystatsFilename = "./" + summarystatsFilename;
