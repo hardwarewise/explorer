@@ -2,6 +2,7 @@ var mongoose = require('mongoose')
   , lib = require('../lib/explorer')
   , db = require('../lib/database')
   , Tx = require('../models/tx')
+  , Nodes = require('../models/nodes')
   , settings = require('../lib/settings')
   , request = require('request');
 
@@ -25,6 +26,8 @@ mongoose.connect(dbString, function(err) {
     exit();
   } else {
     request({uri: 'http://127.0.0.1:' + settings.port + '/nodelist', json: true}, function (error, response, body) {
+      if(error){console.log('Error when get list of node'); exit();}
+      Nodes.remove().exec();
       const keys = Object.keys(body);
       lib.syncLoop(keys.length, function (loop) {
         var i = loop.iteration();
