@@ -29,7 +29,6 @@ mongoose.connect(dbString, function(err) {
       if(error){console.log('Error when get list of node'); exit();}
       Nodes.remove().exec();
       const keys = Object.keys(body);
-      console.log('Adding ' + keys.length + 'nodes...');
       lib.syncLoop(keys.length, function (loop) {
         var i = loop.iteration();
         var address = keys[i];
