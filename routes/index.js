@@ -168,6 +168,38 @@ router.get('/gettermdepositstats', function(req, res) {
 	}
 });
 
+router.get('/officialpoolinfo', function(req, res) {
+    var poolinfoFilename = "sin.pool.sinovate.io.json";
+    poolinfoFilename = "./" + poolinfoFilename;
+
+    var poolinfoStr;
+    try{
+        //read json file
+        poolinfoStr = fs.readFileSync(poolinfoFilename).toString();
+    } catch(e) {
+        console.warn('No stats file found. Continuing using defaults!');
+    }
+
+   var poolinfo = {"algo": "", "height": 0, "workers": 0, "hashrate": 0, "blocksfound": 0};
+   try {
+        if(poolinfoStr) {
+            poolinfoStr = jsonminify(poolinfoStr).replace(",]","]").replace(",}","}");
+            poolinfo = JSON.parse(poolinfoStr);
+            res.send({
+                algo: poolinfo.SIN.algo,
+                height: poolinfo.SIN.height,
+                workers: poolinfo.SIN.workers,
+                hashrate: poolinfo.SIN.hashrate,
+                blocksfound: poolinfo.SIN['24h_blocks']
+            });
+        } else {
+            res.send(poolinfo);
+        }
+   } catch(e) {
+        res.send(poolinfo);
+   }
+});
+
 router.get('/getblockcount', function(req, res) {
     var summarystatsFilename = "summary.json";
 	summarystatsFilename = "./" + summarystatsFilename;
@@ -237,7 +269,8 @@ router.get('/summary', function(req, res) {
 					explorerTop10: summarystats.data[0].explorerTop10,
 					explorerTop50: summarystats.data[0].explorerTop50,
 					burnFee: summarystats.data[0].burnFee,
-					burnNode: summarystats.data[0].burnNode
+					burnNode: summarystats.data[0].burnNode,
+                                        poolHeight: summarystats.data[0].poolHeight
 			});
 		}else{
 			res.send(summarystats);
@@ -499,27 +532,30 @@ router.get('/ext/summary', function(req, res) {
       lib.get_connectioncount(function(connections){
         lib.get_blockcount(function(blockcount) {
           db.get_stats(settings.coin, function (stats) {
-			lib.get_gettermdepositstats(function(termdepositstats){
-				if (hashrate == 'There was an error. Check your console.') {
-				  hashrate = 0;
-				}
-				res.send({ data: [{
-				  difficulty: difficulty,
-				  difficultyHybrid: difficultyHybrid,
-				  supply: stats.supply,
-				  hashrate: hashrate,
-				  lastPrice: stats.last_price,
-				  connections: connections,
-				  blockcount: blockcount,
+            lib.get_gettermdepositstats(function(termdepositstats){
+              lib.get_officialpoolinfo(function(officialpoolinfo){
+                if (hashrate == 'There was an error. Check your console.') {
+                  hashrate = 0;
+                }
+                res.send({ data: [{
+                  difficulty: difficulty,
+                  difficultyHybrid: difficultyHybrid,
+                  supply: stats.supply,
+                  hashrate: hashrate,
+                  lastPrice: stats.last_price,
+                  connections: connections,
+                  blockcount: blockcount,
                   explorerHeight: stats.last,
                   explorerAddresses: stats.addresses,
                   explorerActiveAddresses: stats.active_addresses,
                   explorerTop10: stats.top10,
                   explorerTop50: stats.top50,
                   burnFee: termdepositstats.nBurnFee,
-                  burnNode: termdepositstats.nBurnNode
-				}]});
-		  	});
+                  burnNode: termdepositstats.nBurnNode,
+                  poolHeight: officialpoolinfo.height
+                }]});
+              });
+            });
           });
         });
       });
