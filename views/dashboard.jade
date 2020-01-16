@@ -17,7 +17,7 @@ block content
             hashrate = json.hashrate;
             $("#lastPrice").text(json.lastPrice.toFixed(8));
             $("#lblConnections").text(json.connections + ' connections');
-            $("#lblBlockcount").text(json.explorerHeight + ' / ' + json.blockcount);
+            $("#lblBlockcount").text('[E] ' + json.explorerHeight + ' / [D] ' + json.blockcount + ' / [P] ' + json.poolHeight);
             $("#lblX1").text(' ');
             $("#burnfee").text(json.burnFee);
             $("#burnnode").text(json.burnNode);
