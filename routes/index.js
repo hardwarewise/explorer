@@ -227,7 +227,7 @@ router.get('/getblockcount', function(req, res) {
 
 router.get('/summary', function(req, res) {
     var summarystatsFilename = "summary.json";
-	summarystatsFilename = "./" + summarystatsFilename;
+	summarystatsFilename = "./cache/" + summarystatsFilename;
 
 	var summarystatsStr;
 	try{
