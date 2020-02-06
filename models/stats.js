@@ -15,6 +15,8 @@ var StatsSchema = new Schema({
   active_addresses: { type: Number, default: 0 },
   top10: { type: Number, default: 0 },
   top50: { type: Number, default: 0 },
+  node_burn: { type: Number, default: 0 },
+  fee_burn: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);

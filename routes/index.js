@@ -170,7 +170,7 @@ router.get('/gettermdepositstats', function(req, res) {
 
 router.get('/officialpoolinfo', function(req, res) {
     var poolinfoFilename = "sin.pool.sinovate.io.json";
-    poolinfoFilename = "./" + poolinfoFilename;
+    poolinfoFilename = "./cache/" + poolinfoFilename;
 
     var poolinfoStr;
     try{
