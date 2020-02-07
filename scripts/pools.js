@@ -71,7 +71,7 @@ mongoose.connect(dbString, function(err) {
 		}
 	}
 
-	Pools.remove({}).exec();
+	//Pools.remove({}).exec();
 
 	lib.syncLoop(data.length, function (loop) {
 		var i = loop.iteration();

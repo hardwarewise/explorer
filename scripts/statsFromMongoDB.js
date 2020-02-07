@@ -153,13 +153,13 @@ mongoose.connect(dbString, function(err) {
             if (doc) {
               var item = {range: doc['_id'], count: doc['count'], total: doc['total']};
               data.push(item);
-              if (doc['_id'] = "H")   {tx_d0_count=doc['count']; tx_d0_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-1") {tx_d1_count=doc['count']; tx_d1_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-2") {tx_d2_count=doc['count']; tx_d2_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-3") {tx_d3_count=doc['count']; tx_d3_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-4") {tx_d4_count=doc['count']; tx_d4_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-5") {tx_d5_count=doc['count']; tx_d5_value=doc['total']/100000000;}
-              if (doc['_id'] = "H-6") {tx_d6_count=doc['count']; tx_d6_value=doc['total']/100000000;}
+              if (doc['_id'] == "H")   {tx_d0_count=doc['count']; tx_d0_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-1") {tx_d1_count=doc['count']; tx_d1_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-2") {tx_d2_count=doc['count']; tx_d2_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-3") {tx_d3_count=doc['count']; tx_d3_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-4") {tx_d4_count=doc['count']; tx_d4_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-5") {tx_d5_count=doc['count']; tx_d5_value=doc['total']/100000000;}
+              if (doc['_id'] == "H-6") {tx_d6_count=doc['count']; tx_d6_value=doc['total']/100000000;}
               console.log("Range: " + doc['_id'] + " " + doc['count'] + " " + doc['total']);
             }
           }

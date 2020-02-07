@@ -34,17 +34,12 @@ block content
               var KnownHash = (totalKnownHash/1000000000).toFixed(2);
               $("#hashrate").text(KnownHash+ ' / ' + hashrate + '');
             }});
-            $.ajax({url: '/ext/txstats/'+json.blockcount, success: function(json){
-                 var nTx=[];
-                 var vTx=[];
-                 var ticks=[];
-                 const keys = Object.keys(json.data);
-                 for (var i = 0; i < keys.length; i++) {
-                   nTx.push(json.data[i].count);
-                   vTx.push(json.data[i].total / 100000000);
-                   ticks.push(json.data[i].range);
-                 }
-                 $("#barTxStatsValue").text('');
+            var nTx=[json.tx_d6_count, json.tx_d5_count, json.tx_d4_count, json.tx_d3_count, json.tx_d2_count, json.tx_d1_count, json.tx_d0_count];
+            var vTx=[Number.parseInt(json.tx_d6_value), Number.parseInt(json.tx_d5_value), Number.parseInt(json.tx_d4_value), 
+                     Number.parseInt(json.tx_d3_value), Number.parseInt(json.tx_d2_value), Number.parseInt(json.tx_d1_value), Number.parseInt(json.tx_d0_value)];
+            var ticks=["D-6", "D-5", "D-4", "D-3", "D-2", "D-1", "D"];
+
+                 //$("#barTxStatsValue").text('');
                  plot1 = $.jqplot('barTxStatsValue', [vTx], {
                    title: 'Transaction values (SIN) per day',
                    seriesColors:['#FF3333'],
@@ -64,7 +59,7 @@ block content
                      }
                    }
                  });
-                 $("#barTxStatsNumber").text('');
+                 //$("#barTxStatsNumber").text('');
                  plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
                    seriesColors:['#73C774'],
@@ -84,7 +79,6 @@ block content
                      }
                    }
                  });
-             }});
           }});
           $.ajax({url: '/nodelist', success: function ( json ) {
               const keys = Object.keys(json);

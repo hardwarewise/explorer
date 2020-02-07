@@ -270,7 +270,21 @@ router.get('/summary', function(req, res) {
 					explorerTop50: summarystats.data[0].explorerTop50,
 					burnFee: summarystats.data[0].burnFee,
 					burnNode: summarystats.data[0].burnNode,
-                                        poolHeight: summarystats.data[0].poolHeight
+                                        poolHeight: summarystats.data[0].poolHeight,
+                                        tx_d0_count: summarystats.data[0].tx_d0_count,
+                                        tx_d0_value: summarystats.data[0].tx_d0_value,
+                                        tx_d1_count: summarystats.data[0].tx_d1_count,
+                                        tx_d1_value: summarystats.data[0].tx_d1_value,
+                                        tx_d2_count: summarystats.data[0].tx_d2_count,
+                                        tx_d2_value: summarystats.data[0].tx_d2_value,
+                                        tx_d3_count: summarystats.data[0].tx_d3_count,
+                                        tx_d3_value: summarystats.data[0].tx_d3_value,
+                                        tx_d4_count: summarystats.data[0].tx_d4_count,
+                                        tx_d4_value: summarystats.data[0].tx_d4_value,
+                                        tx_d5_count: summarystats.data[0].tx_d5_count,
+                                        tx_d5_value: summarystats.data[0].tx_d5_value,
+                                        tx_d6_count: summarystats.data[0].tx_d6_count,
+                                        tx_d6_value: summarystats.data[0].tx_d6_value,
 			});
 		}else{
 			res.send(summarystats);
@@ -552,7 +566,21 @@ router.get('/ext/summary', function(req, res) {
                   explorerTop50: stats.top50,
                   burnFee: termdepositstats.nBurnFee,
                   burnNode: stats.node_burn,
-                  poolHeight: officialpoolinfo.height
+                  poolHeight: officialpoolinfo.height,
+                  tx_d0_count: stats.tx_d0_count,
+                  tx_d0_value: stats.tx_d0_value,
+                  tx_d1_count: stats.tx_d1_count,
+                  tx_d1_value: stats.tx_d1_value,
+                  tx_d2_count: stats.tx_d2_count,
+                  tx_d2_value: stats.tx_d2_value,
+                  tx_d3_count: stats.tx_d3_count,
+                  tx_d3_value: stats.tx_d3_value,
+                  tx_d4_count: stats.tx_d4_count,
+                  tx_d4_value: stats.tx_d4_value,
+                  tx_d5_count: stats.tx_d5_count,
+                  tx_d5_value: stats.tx_d5_value,
+                  tx_d6_count: stats.tx_d6_count,
+                  tx_d6_value: stats.tx_d6_value,
                 }]});
               });
             });
