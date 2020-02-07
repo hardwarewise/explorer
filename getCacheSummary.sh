@@ -1,6 +1,9 @@
 #bin/bash
 
-cd /home/sinteam/explorer && wget -O cache/summary.json.tmp "http://explorer3.sinovate.io/ext/summary"
+#Update address stats before generate the summary. coinstats is updated
+#cd /home/sinteam/explorer && wget --timeout=0 -O cache/address.json "http://explorer3.sinovate.io/ext/addressstats"
+
+cd /home/sinteam/explorer && wget --timeout=0 -O cache/summary.json.tmp "http://explorer3.sinovate.io/ext/summary"
 
 sleep 15
 

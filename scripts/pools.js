@@ -32,7 +32,7 @@ mongoose.connect(dbString, function(err) {
 	for(const pool in settings.pools) {
 		var poollistFilename = settings.pools[pool].pool_name + ".json";
 		//poollistFilename = "./" + poollistFilename;
-		poollistFilename = "./" + poollistFilename;
+		poollistFilename = "./cache/" + poollistFilename;
 
 		var poolliststatsStr;
 		try{
@@ -70,14 +70,16 @@ mongoose.connect(dbString, function(err) {
 			});
 		}
 	}
-	
-	Pools.remove().exec();
-	
+
+	Pools.remove({}).exec();
+
 	lib.syncLoop(data.length, function (loop) {
 		var i = loop.iteration();
 		var pool = data[i];
 		console.log("Add pool: " + JSON.stringify(pool));
-		Pools.remove({ 'pool_name': pool.pool_name});
+		console.log("Delete " , pool.pool_name);
+                Pools.deleteMany({ "pool_name": pool.pool_name});
+                Pools.remove({"pool_name": pool.pool_name}).exec();
 		db.create_pool({
 				createdAt: pool.createdAt,
 				pool_name: pool.pool_name,

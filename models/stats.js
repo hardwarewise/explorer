@@ -17,6 +17,20 @@ var StatsSchema = new Schema({
   top50: { type: Number, default: 0 },
   node_burn: { type: Number, default: 0 },
   fee_burn: { type: Number, default: 0 },
+  tx_d0_count: { type: Number, default: 0 },
+  tx_d0_value: { type: Number, default: 0 },
+  tx_d1_count: { type: Number, default: 0 },
+  tx_d1_value: { type: Number, default: 0 },
+  tx_d2_count: { type: Number, default: 0 },
+  tx_d2_value: { type: Number, default: 0 },
+  tx_d3_count: { type: Number, default: 0 },
+  tx_d3_value: { type: Number, default: 0 },
+  tx_d4_count: { type: Number, default: 0 },
+  tx_d4_value: { type: Number, default: 0 },
+  tx_d5_count: { type: Number, default: 0 },
+  tx_d5_value: { type: Number, default: 0 },
+  tx_d6_count: { type: Number, default: 0 },
+  tx_d6_value: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);

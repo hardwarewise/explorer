@@ -551,7 +551,7 @@ router.get('/ext/summary', function(req, res) {
                   explorerTop10: stats.top10,
                   explorerTop50: stats.top50,
                   burnFee: termdepositstats.nBurnFee,
-                  burnNode: termdepositstats.nBurnNode,
+                  burnNode: stats.node_burn,
                   poolHeight: officialpoolinfo.height
                 }]});
               });

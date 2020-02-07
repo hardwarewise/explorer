@@ -1,4 +1,12 @@
 var mongoose = require('mongoose')
+  , Address = require('../models/address')
+  , Stats = require('../models/stats')
+  , Markets = require('../models/markets')
+  , Tx = require('../models/tx')
+  , Richlist = require('../models/richlist')
+  , Peers = require('../models/peers')
+  , Nodes = require('../models/nodes')
+  , Inf = require('../models/infnodes')
   , lib = require('../lib/explorer')
   , db = require('../lib/database')
   , settings = require('../lib/settings')
@@ -25,6 +33,7 @@ mongoose.connect(dbString, function(err) {
     console.log('Aborting');
     exit();
   } else {
+    //BEGIN world node stats
     const cursor = Nodes.aggregate([
                      {
                        $group: {
@@ -105,5 +114,6 @@ mongoose.connect(dbString, function(err) {
       });
     };
     result();
+    //END world node stats
   }
 });
