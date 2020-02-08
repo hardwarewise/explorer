@@ -6,7 +6,7 @@ var StatsSchema = new Schema({
   count: { type: Number, default: 1 },
   last: { type: Number, default: 1 },
   //difficulty: { type: Object, default: {} },
-  //hashrate: { type: String, default: 'N/A' },
+  known_hashrate: { type: Number, default: 0 },
   supply: { type: Number, default: 0 },
   //last_txs: { type: Array, default: [] },
   connections: { type: Number, default: 0 },
@@ -31,6 +31,18 @@ var StatsSchema = new Schema({
   tx_d5_value: { type: Number, default: 0 },
   tx_d6_count: { type: Number, default: 0 },
   tx_d6_value: { type: Number, default: 0 },
+  inf_exp: { type: Number, default: 0 },
+  inf_exp_1d: { type: Number, default: 0 },
+  inf_exp_7d: { type: Number, default: 0 },
+  inf_exp_14d: { type: Number, default: 0 },
+  inf_exp_30d: { type: Number, default: 0 },
+  inf_exp_60d: { type: Number, default: 0 },
+  inf_exp_90d: { type: Number, default: 0 },
+  inf_exp_120d: { type: Number, default: 0 },
+  inf_exp_150d: { type: Number, default: 0 },
+  inf_exp_180d: { type: Number, default: 0 },
+  inf_exp_270d: { type: Number, default: 0 },
+  inf_exp_365d: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);

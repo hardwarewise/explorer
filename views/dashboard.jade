@@ -26,21 +26,15 @@ block content
             $("#explorerActiveAddresses").text(json.explorerActiveAddresses);
             $("#explorerTop10").text(json.explorerTop10);
             $("#explorerTop50").text(json.explorerTop50);
-            $.ajax({url: '/poollist', success: function(json){
-              var totalKnownHash = 0;
-              for (var i = 0; i < json.data.length; i++) {
-                totalKnownHash = totalKnownHash + json.data[i]['pool_hashrate'];
-              }
-              var KnownHash = (totalKnownHash/1000000000).toFixed(2);
-              $("#hashrate").text(KnownHash+ ' / ' + hashrate + '');
-            }});
+            var KnownHash = (json.known_hashrate / 1000000000).toFixed(2);
+            $("#hashrate").text(KnownHash+ ' / ' + hashrate + '');
             var nTx=[json.tx_d6_count, json.tx_d5_count, json.tx_d4_count, json.tx_d3_count, json.tx_d2_count, json.tx_d1_count, json.tx_d0_count];
             var vTx=[Number.parseInt(json.tx_d6_value), Number.parseInt(json.tx_d5_value), Number.parseInt(json.tx_d4_value), 
                      Number.parseInt(json.tx_d3_value), Number.parseInt(json.tx_d2_value), Number.parseInt(json.tx_d1_value), Number.parseInt(json.tx_d0_value)];
             var ticks=["D-6", "D-5", "D-4", "D-3", "D-2", "D-1", "D"];
 
-                 //$("#barTxStatsValue").text('');
-                 plot1 = $.jqplot('barTxStatsValue', [vTx], {
+            $("#barTxStatsValue").text('');
+            plot1 = $.jqplot('barTxStatsValue', [vTx], {
                    title: 'Transaction values (SIN) per day',
                    seriesColors:['#FF3333'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
@@ -58,9 +52,9 @@ block content
                        ticks: ticks
                      }
                    }
-                 });
-                 //$("#barTxStatsNumber").text('');
-                 plot3 = $.jqplot('barTxStatsNumber', [nTx], {
+            });
+            $("#barTxStatsNumber").text('');
+            plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
                    seriesColors:['#73C774'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
@@ -78,7 +72,31 @@ block content
                        ticks: ticks
                      }
                    }
-                 });
+            });
+            $('#playeranim').css('display', 'none');
+            $("#barExpiredHeight").text('');
+            var exp=[json.inf_exp, json.inf_exp_1d, json.inf_exp_7d, json.inf_exp_14d, json.inf_exp_30d, json.inf_exp_60d,
+                     json.inf_exp_90d, json.inf_exp_120d, json.inf_exp_150d, json.inf_exp_180d, json.inf_exp_270d, json.inf_exp_365d];
+            var label=["Expired", "1D", "7D", "14D", "1M", "2M", "3M", "4M", "5M", "6M", "9M", "1Y"]
+            plot2 = $.jqplot('barExpiredHeight', [exp], {
+                   title: 'Infinity node expire timeline',
+                   seriesColors:['#FF8204'],
+                   grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
+                   seriesDefaults: {
+                     renderer:$.jqplot.BarRenderer
+                   },
+                   series:[
+                     {pointLabels:{
+                       show: true,
+                       labels:exp
+                   }}],
+                   axes: {
+                     xaxis: {
+                       renderer: $.jqplot.CategoryAxisRenderer,
+                       ticks: label
+                     }
+                   }
+            });
           }});
           $.ajax({url: '/nodelist', success: function ( json ) {
               const keys = Object.keys(json);
@@ -345,38 +363,7 @@ block content
                  responsive: true
                }
              };
-             $(document).ready(function(){
-               $('#playeranim').css('display', 'none');
-               //expire height
-               $.ajax({url: '/ext/nodeexpire', success: function(json){
-                 var s=[];
-                 var ticks=[];
-                 const keys = Object.keys(json.data);
-                 for (var i = 0; i < keys.length; i++) {
-                   s.push(json.data[i].number);
-                   ticks.push(json.data[i].range);
-                 }
-                 plot2 = $.jqplot('barExpiredHeight', [s], {
-                   title: 'Infinity node expire height / 2 Weeks creation',
-                   seriesColors:['#FF8204'],
-                   grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
-                   seriesDefaults: {
-                     renderer:$.jqplot.BarRenderer
-                   },
-                   series:[
-                     {pointLabels:{
-                       show: true,
-                       labels:s
-                   }}],
-                   axes: {
-                     xaxis: {
-                       renderer: $.jqplot.CategoryAxisRenderer,
-                       ticks: ticks
-                     }
-                   }
-                 });
-               }});
-             });
+             $('#playeranim').css('display', 'none');
              //worldmap
              setTimeout(function(){
                $.ajax({url: '/ext/dashboard', success: function(json){

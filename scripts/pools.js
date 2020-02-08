@@ -71,15 +71,13 @@ mongoose.connect(dbString, function(err) {
 		}
 	}
 
-	//Pools.remove({}).exec();
-
 	lib.syncLoop(data.length, function (loop) {
-		var i = loop.iteration();
-		var pool = data[i];
-		console.log("Add pool: " + JSON.stringify(pool));
-		console.log("Delete " , pool.pool_name);
-                Pools.deleteMany({ "pool_name": pool.pool_name});
-                Pools.remove({"pool_name": pool.pool_name}).exec();
+          var i = loop.iteration();
+          var pool = data[i];
+          Pools.countDocuments({pool_name: pool.pool_name}).exec(function(err, count){
+            console.log("Pool exist: "+ count);
+            if (count ==0){
+		console.log("Create pool: " + JSON.stringify(pool));
 		db.create_pool({
 				createdAt: pool.createdAt,
 				pool_name: pool.pool_name,
@@ -92,6 +90,22 @@ mongoose.connect(dbString, function(err) {
 			}, function(){
 			loop.next();
 		});
+             } else {
+                console.log("Update pool: " + JSON.stringify(pool));
+                if (pool.pool_hashrate > 0){
+                  Pools.updateOne({pool_name: pool.pool_name}, {
+                                homepage: pool.homepage,
+                                block_height: pool.block_height,
+                                workers: pool.workers,
+                                blocks_in_24h: pool.blocks_in_24h,
+                                last_block: pool.last_block,
+                                pool_hashrate: pool.pool_hashrate
+                  }, function() {loop.next();});
+                } else {
+                  loop.next();
+                }
+            }
+          });
 	}, function() {
         exit();
     });

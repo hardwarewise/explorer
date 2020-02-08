@@ -15,10 +15,6 @@ function download_pool_stats() {
         fi
 }
 
-download_pool_stats pool.rig.tokyo
-
-sleep 5
-
 download_pool_stats icemining.ca
 
 sleep 5
@@ -27,19 +23,8 @@ download_pool_stats zergpool.com
 
 sleep 5
 
-download_pool_stats gethash.cc
-
-sleep 5
-
-download_pool_stats nlpool.nl
-
-sleep 5
-
 download_pool_stats zpool.ca
 
 sleep 5
 
 download_pool_stats pool.sinovate.io
-
-
-
