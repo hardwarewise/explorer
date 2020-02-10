@@ -298,6 +298,12 @@ router.get('/summary', function(req, res) {
                                         inf_exp_180d: summarystats.data[0].inf_exp_180d,
                                         inf_exp_270d: summarystats.data[0].inf_exp_270d,
                                         inf_exp_365d: summarystats.data[0].inf_exp_365d,
+                                        inf_burnt_big: summarystats.data[0].inf_burnt_big,
+                                        inf_burnt_mid: summarystats.data[0].inf_burnt_mid,
+                                        inf_burnt_lil: summarystats.data[0].inf_burnt_lil,
+                                        inf_online_big: summarystats.data[0].inf_online_big,
+                                        inf_online_mid: summarystats.data[0].inf_online_mid,
+                                        inf_online_lil: summarystats.data[0].inf_online_lil,
 			});
 		}else{
 			res.send(summarystats);
@@ -607,6 +613,12 @@ router.get('/ext/summary', function(req, res) {
                   inf_exp_180d: stats.inf_exp_180d,
                   inf_exp_270d: stats.inf_exp_270d,
                   inf_exp_365d: stats.inf_exp_365d,
+                  inf_burnt_big: stats.inf_burnt_big,
+                  inf_burnt_mid: stats.inf_burnt_mid,
+                  inf_burnt_lil: stats.inf_burnt_lil,
+                  inf_online_big: stats.inf_online_big,
+                  inf_online_mid: stats.inf_online_mid,
+                  inf_online_lil: stats.inf_online_lil,
                 }]});
               });
             });

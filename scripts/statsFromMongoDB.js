@@ -19,13 +19,14 @@ function  usage(){
   console.log('Usage: node scripts/statsFromMongoDB.js [statsName]');
   console.log('');
   console.log('statsName: (required)');
-  console.log('topAddress       calcul Top10 and Top50 and update coinstats');
-  console.log('activeAddress    number of address has sup 10SIN in balance');
-  console.log('totalAddress     total address used from block genesis');
-  console.log('nodeBurnCoins    total coins burnt to create node');
-  console.log('knownHashrate    total hashrate from all known pools');
-  console.log('infExpired       infinity node expired stats');
-  console.log('tx7days          number and amount of 7 previous days');
+  console.log('topAddress            calcul Top10 and Top50 and update coinstats');
+  console.log('activeAddress         number of address has sup 10SIN in balance');
+  console.log('totalAddress          total address used from block genesis');
+  console.log('nodeBurnCoins         total coins burnt to create node');
+  console.log('knownHashrate         total hashrate from all known pools');
+  console.log('infCreateAndOnline    total node create and online');
+  console.log('infExpired            infinity node expired stats');
+  console.log('tx7days               number and amount of 7 previous days');
   console.log('');
   process.exit(0);
 }
@@ -118,6 +119,34 @@ mongoose.connect(dbString, function(err) {
             known_hashrate: hashrate
         }, function() {exit();});
         console.log("INFO: updated Known Hashrate "+ hashrate);
+      });
+    } else if (statsName == 'infCreateAndOnline'){
+      db.get_stats(settings.coin, function(stats){
+        var deamonH  = stats.count;
+        Inf.find({}).exec(function(err, infnodes){
+          var node;
+          var totalBIG = 0, totalMID = 0, totalLIL = 0;
+          var onlineBIG = 0, onlineMID = 0, onlineLIL = 0;
+          for (var i=0; i < infnodes.length; i++ ){
+            var node = infnodes[i];
+            if(node.type == 10) {totalBIG = totalBIG + 1;}
+            if(node.type == 5)  {totalMID = totalMID + 1;}
+            if(node.type == 1)  {totalLIL = totalLIL + 1;}
+            if(node.last_paid >= deamonH - node.last_stm_size && node.type == 10) {onlineBIG = onlineBIG + 1;}
+            if(node.last_paid >= deamonH - node.last_stm_size && node.type == 5)  {onlineMID = onlineMID + 1;}
+            if(node.last_paid >= deamonH - node.last_stm_size && node.type == 1)  {onlineLIL = onlineLIL + 1;}
+          }
+          Stats.updateOne({coin: settings.coin}, {
+            inf_burnt_big: totalBIG,
+            inf_burnt_mid: totalMID,
+            inf_burnt_lil: totalLIL,
+            inf_online_big: onlineBIG,
+            inf_online_mid: onlineMID,
+            inf_online_lil: onlineLIL,
+          }, function() {exit();});
+          console.log("INFO: update totalBID: " + totalBIG + " totalMID: " + totalMID + " totalLIL: " + totalLIL);
+          console.log("INFO: update onlineBIG: " + onlineBIG + " onlineMID: " + onlineMID + " onlineLIL: " + onlineLIL);
+        });
       });
     } else if (statsName == 'infExpired'){
       db.get_stats(settings.coin, function(stats){

@@ -11,6 +11,7 @@ var InfinityNodeSchema = new Schema({
   address_backup: { type: String, default: "" },
   last_paid: { type: Number, default: 0 },
   rank: { type: Number, default: 0 },
+  last_stm_size: { type: Number, default: 0 },
   publickey: { type: String, default: "" },
   ip: { type: String, default: "" },
   country: { type: String, default: "" }

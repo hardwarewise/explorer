@@ -4,12 +4,15 @@ block content
   script.
       $(document).ready(function(){
         $('##{active}').addClass('active');
+        function formatNumber(num) {
+          return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+        }
         function update_stats(){
           var supply = 0;
           var burnt = 0;
           var hashrate = 0;
           $.ajax({url: '/summary', success: function(json){
-            $("#supply").text(json.supply);
+            $("#supply").text(formatNumber(Math.floor(json.supply)));
             supply = json.supply;
             $("#difficulty").text(json.difficulty);
             $("#difficultyHybrid").text(json.difficultyHybrid);
@@ -19,13 +22,13 @@ block content
             $("#lblConnections").text(json.connections + ' connections');
             $("#lblBlockcount").text('[E] ' + json.explorerHeight + ' / [D] ' + json.blockcount + ' / [P] ' + json.poolHeight);
             $("#lblX1").text(' ');
-            $("#burnfee").text(json.burnFee);
-            $("#burnnode").text(json.burnNode);
-            $("#burntotal").text(json.burnFee + json.burnNode);
+            $("#burnfee").text(formatNumber(Math.floor(json.burnFee)));
+            $("#burnnode").text(formatNumber(json.burnNode));
+            $("#burntotal").text(formatNumber(json.burnFee + json.burnNode));
             $("#explorerAddresses").text(json.explorerAddresses);
             $("#explorerActiveAddresses").text(json.explorerActiveAddresses);
-            $("#explorerTop10").text(json.explorerTop10);
-            $("#explorerTop50").text(json.explorerTop50);
+            $("#explorerTop10").text(formatNumber(Math.floor(json.explorerTop10)));
+            $("#explorerTop50").text(formatNumber(Math.floor(json.explorerTop50)));
             var KnownHash = (json.known_hashrate / 1000000000).toFixed(2);
             $("#hashrate").text(KnownHash+ ' / ' + hashrate + '');
             var nTx=[json.tx_d6_count, json.tx_d5_count, json.tx_d4_count, json.tx_d3_count, json.tx_d2_count, json.tx_d1_count, json.tx_d0_count];
@@ -97,49 +100,13 @@ block content
                      }
                    }
             });
-          }});
-          $.ajax({url: '/nodelist', success: function ( json ) {
-              const keys = Object.keys(json);
-              var big = 0, big_enable = 0, big_disable = 0, mid = 0, mid_enable = 0, mid_disable = 0, lil = 0, lil_enable = 0, lil_disable = 0;
-              var reward_lil = 0, reward_mid = 0, reward_big = 0;
-              var burnAmount_lil = 0, burnAmount_mid = 0, burnAmount_big = 0;
-              for (var i = 0; i < keys.length; i++) {
-                const line = {}
-                line['address'] = keys[i];
-                const lineData = json[keys[i]].split(" ");
-                const noEmptyData = [];
-                for (var j = 0; j < lineData.length; j++) {
-                  if (lineData[j].length !== 0) {
-                    noEmptyData.push(lineData[j])
-                  }
-                }
-                line['status'] = noEmptyData[0].replace(/_/g, ' ').toLowerCase()
-                if (noEmptyData[8] == 1) { 
-                  lil++;
-                  reward_lil = noEmptyData[9];
-                  burnAmount_lil = noEmptyData[10];
-                  if (line['status'] == 'enabled') { lil_enable++; } else { lil_disable++; }
-                }
-                if (noEmptyData[8] == 5) { 
-                  mid++; 
-                  reward_mid = noEmptyData[9];
-                  burnAmount_mid = noEmptyData[10];
-                  if (line['status'] == 'enabled') { mid_enable++; } else { mid_disable++; }
-                }
-                if (noEmptyData[8] == 10) { 
-                  big++;
-                  reward_big = noEmptyData[9];
-                  burnAmount_big = noEmptyData[10];
-                  if (line['status'] == 'enabled') { big_enable++; } else { big_disable++; }
-                }
-              }
-              var roi_big = "UNKNOWN"; if(reward_big != 0) roi_big = "" + burnAmount_big / ((720 / big_enable) * reward_big);
-              var roi_mid = "UNKNOWN"; if(reward_mid != 0) roi_mid = "" + burnAmount_mid / ((720 / mid_enable) * reward_mid);
-              var roi_lil = "UNKNOWN"; if(reward_lil != 0) roi_lil = "" + burnAmount_lil / ((720 / lil_enable) * reward_lil);
-              $("#n_big").text(big + " (" + big_enable + "/" + big_disable + ") / ROI: " + Math.floor(roi_big) + " days");
-              $("#n_mid").text(mid + " (" + mid_enable + "/" + mid_disable + ") / ROI: " + Math.floor(roi_mid) + " days");
-              $("#n_lil").text(lil + " (" + lil_enable + "/" + lil_disable + ") / ROI: " + Math.floor(roi_lil) + " days");
-              $("#n_totalnode").text(lil + mid + big + " nodes");
+            var roi_big = 1000000 / ((720 / json.inf_online_big) * 1752);
+            var roi_mid = 500000 / ((720 / json.inf_online_mid) * 838);
+            var roi_lil = 100000 / ((720 / json.inf_online_lil) * 160);
+            $("#n_big").text(json.inf_burnt_big + "/" + json.inf_online_big + " / ROI: " + Math.floor(roi_big) + " days");
+            $("#n_mid").text(json.inf_burnt_mid + "/" + json.inf_online_mid + " / ROI: " + Math.floor(roi_mid) + " days");
+            $("#n_lil").text(json.inf_burnt_lil + "/" + json.inf_online_lil + " / ROI: " + Math.floor(roi_lil) + " days");
+            $("#n_totalnode").text(json.inf_online_big + json.inf_online_mid + json.inf_online_lil + " nodes");
           }});
         };
         setInterval( function() {

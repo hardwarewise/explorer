@@ -43,14 +43,21 @@ mongoose.connect(dbString, function(err) {
           if(node){
             // node already exists => check update
             console.log("Existe: " + burntx);
-            if (node.address == noEmptyData[0])
+            if (node.last_stm_size != noEmptyData[8] || node.last_paid != noEmptyData[6])
             {
-              console.log(" Nothing to update");
+              console.log("Update last paid or last statement size");
+              Inf.updateOne({burntx: burntx}, {
+                                last_paid: noEmptyData[6],
+                                last_stm_size: noEmptyData[8],
+                  }, function() {loop.next();});
+
+            } else {
+              console.log("Nothing to update");
+              loop.next();
             }
-            loop.next();
           } else {
             // node does not exist => create new node
-            console.log("Add:  " + address);
+            console.log("Add " + burntx); 
             db.create_infnode({
               burntx: burntx,
               address: noEmptyData[0],
@@ -60,7 +67,8 @@ mongoose.connect(dbString, function(err) {
               type: noEmptyData[4],
               address_backup: noEmptyData[5],
               last_paid: noEmptyData[6],
-              rank: noEmptyData[7]
+              rank: noEmptyData[7],
+              last_stm_size: noEmptyData[8],
             }, function(){
               loop.next();
             });

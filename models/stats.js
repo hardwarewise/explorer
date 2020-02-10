@@ -43,6 +43,12 @@ var StatsSchema = new Schema({
   inf_exp_180d: { type: Number, default: 0 },
   inf_exp_270d: { type: Number, default: 0 },
   inf_exp_365d: { type: Number, default: 0 },
+  inf_burnt_big: { type: Number, default: 0 },
+  inf_burnt_mid: { type: Number, default: 0 },
+  inf_burnt_lil: { type: Number, default: 0 },
+  inf_online_big: { type: Number, default: 0 },
+  inf_online_mid: { type: Number, default: 0 },
+  inf_online_lil: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);
