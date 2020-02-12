@@ -34,7 +34,7 @@ mongoose.connect(dbString, function(err) {
     exit();
   } else {
     //BEGIN world node stats
-    const cursor = Nodes.aggregate([
+    const cursor = Inf.aggregate([
                      {
                        $group: {
                          _id: {country: "$country", type: "$type"},

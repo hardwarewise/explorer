@@ -37,27 +37,46 @@ mongoose.connect(dbString, function(err) {
             noEmptyData.push(lineData[j]);
           }
        }
-
+       var ip="0.0.0.0";
+       var publickey="";
+       if (noEmptyData[11] != "[::]:0"){
+              ip = noEmptyData[11].split(':')[0];
+       }
+       if (noEmptyData[10] != "NodeAddress"){
+              publickey = noEmptyData[10];
+       }
 
         db.find_infnode(burntx, function(node) {
           if(node){
             // node already exists => check update
             console.log("Existe: " + burntx);
-            if (node.last_stm_size != noEmptyData[8] || node.last_paid != noEmptyData[6])
+            if (node.last_stm_size != noEmptyData[8] ||
+                node.last_paid != noEmptyData[6] ||
+                (node.ip != ip && ip != "0.0.0.0")
+               )
             {
-              console.log("Update last paid or last statement size");
-              Inf.updateOne({burntx: burntx}, {
+              if (node.ip != ip && ip != "0.0.0.0"){
+                  console.log("Update last paid or last statement size or IP change");
+                  Inf.updateOne({burntx: burntx}, {
+                                last_paid: noEmptyData[6],
+                                last_stm_size: noEmptyData[8],
+                                ip: ip,
+                                country: "",
+                  }, function() {loop.next();});
+              }else{
+                  console.log("Update last paid or last statement size");
+                  Inf.updateOne({burntx: burntx}, {
                                 last_paid: noEmptyData[6],
                                 last_stm_size: noEmptyData[8],
                   }, function() {loop.next();});
-
+              }
             } else {
               console.log("Nothing to update");
               loop.next();
             }
           } else {
             // node does not exist => create new node
-            console.log("Add " + burntx); 
+            console.log("Add " + burntx);
             db.create_infnode({
               burntx: burntx,
               address: noEmptyData[0],
@@ -69,6 +88,8 @@ mongoose.connect(dbString, function(err) {
               last_paid: noEmptyData[6],
               rank: noEmptyData[7],
               last_stm_size: noEmptyData[8],
+              publickey: publickey,
+              ip: ip,
             }, function(){
               loop.next();
             });
@@ -78,6 +99,6 @@ mongoose.connect(dbString, function(err) {
         exit();
       });
     });
-  }
+  }// end else
 });
 
