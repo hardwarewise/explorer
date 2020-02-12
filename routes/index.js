@@ -341,32 +341,6 @@ router.get('/getmoneysupply', function(req, res) {
 	}
 });
 
-router.get('/nodelist', function(req, res) {
-    var nodelistFilename = "infinitynode.json";
-	nodelistFilename = "./" + nodelistFilename;
-
-	var nodeliststatsStr;
-	try{
-		//read the settings sync
-		nodeliststatsStr = fs.readFileSync(nodelistFilename).toString();
-	} catch(e){
-		console.warn('No stats file found. Continuing using defaults!');
-	}
-
-	var nodeliststats = {"address":""};
-	try {
-		if(nodeliststatsStr) {
-			nodeliststatsStr = jsonminify(nodeliststatsStr).replace(",]","]").replace(",}","}");
-			nodeliststats = JSON.parse(nodeliststatsStr);
-			res.send(nodeliststats);
-		}else{
-			res.send(nodeliststats);
-		}
-	}catch(e){
-		res.send(nodeliststats);
-	}
-});
-
 router.get('/poollist', function(req, res) {
 	const data = [];
 	db.get_pools(function(pools){
@@ -398,10 +372,24 @@ router.get('/markets/:market', function(req, res) {
   var market = req.params['market'];
   if (settings.markets.enabled.indexOf(market) != -1) {
     db.get_market(market, function(data) {
-      /*if (market === 'tradeogre') {
-        data = JSON.parse(data);
+      function timeConverter(UNIX_timestamp){
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = a.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time;
       }
-      console.log(data);*/
+      if (market === 'tradeogre') {
+        for(var i=0; i < data.history.length; i++){
+          data.history[i].date = timeConverter(data.history[i].date);
+        }
+      }
+      console.log(data);
       res.render('./markets/' + market, {
         active: 'markets',
         marketdata: {

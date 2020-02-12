@@ -144,8 +144,10 @@ app.use('/ext/dashboard', function(req,res){
 });
 
 app.use('/ext/nodelist', function(req,res){
-  db.get_nodes(function(get_nodes){
-    res.send({data: get_nodes});
+  db.get_stats(settings.coin, function(stats){
+    db.get_infnodes(function(get_nodes){
+      res.send({data: get_nodes, height: stats.count});
+    });
   });
 });
 

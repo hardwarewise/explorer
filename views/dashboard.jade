@@ -108,6 +108,7 @@ block content
             $("#n_lil").text(json.inf_burnt_lil + "/" + json.inf_online_lil + " / ROI: " + Math.floor(roi_lil) + " days");
             $("#n_totalnode").text(json.inf_online_big + json.inf_online_mid + json.inf_online_lil + " nodes");
           }});
+          json = [];
         };
         setInterval( function() {
           update_stats();
