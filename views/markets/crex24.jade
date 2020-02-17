@@ -20,7 +20,7 @@ block market_view
         series: [
           {
             renderer:$.jqplot.OHLCRenderer,
-            rendererOptions:{ candleStick:true }
+            rendererOptions:{ candleStick:true, fillUpBody: true, upBodyColor: '#66cc66', downBodyColor: '#ff0500', closeColor: '#ffe100' }
           }
         ],
         highlighter: {
