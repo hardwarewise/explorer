@@ -9,6 +9,7 @@ var mongoose = require('mongoose')
   , Inf = require('../models/infnodes')
   , Tx = require('../models/tx')
   , Pools = require('../models/pools')
+  , Income = require('../models/income')
   , request = require('request');
 
 var COUNT = 5000; //number of blocks to index
@@ -26,6 +27,8 @@ function  usage(){
   console.log('knownHashrate         total hashrate from all known pools');
   console.log('infCreateAndOnline    total node create and online');
   console.log('infExpired            infinity node expired stats');
+  console.log('incomeBurnNode        income from all burn node');
+  console.log('incomeBurnAddress     income from all burn address');
   console.log('tx7days               number and amount of 7 previous days');
   console.log('');
   process.exit(0);
@@ -221,6 +224,116 @@ mongoose.connect(dbString, function(err) {
             inf_exp_270d: inf_exp_270d, inf_exp_365d: inf_exp_365d
           }, function() {exit();});
           console.log("INFO: updated node expired stats");
+        };
+        result();
+      });
+    } else if (statsName == 'incomeBurnNode'){
+      Inf.find({}).exec(function(err, infnodes){
+        var stm_size_big = 0, stm_size_mid = 0, stm_size_lil = 0;
+          for (var i=0; i < infnodes.length; i++ ){
+            var node = infnodes[i];
+            if(node.type == 10) {stm_size_big = node.last_stm_size;}
+            if(node.type == 5) {stm_size_mid = node.last_stm_size;}
+            if(node.type == 1) {stm_size_lil = node.last_stm_size;}
+          }
+          Income.findOne({coin: settings.coin}, function(err, income){
+            var income_big = (1000000 / 262800)*stm_size_big;
+            var income_mid = (500000 / 262800)*stm_size_mid;
+            var income_lil = (100000 / 262800)*stm_size_lil;
+            if(income){
+              Income.updateOne({coin: settings.coin}, {
+                in_burnt_big: income_big,
+                in_burnt_mid: income_mid,
+                in_burnt_lil: income_lil
+              }, function() {exit();});
+              console.log("INFO: update income from all burn node: " + income_big + " " + income_mid + " " + income_lil);
+            } else {
+              var inc = new Income({
+                coin: settings.coin,
+                in_burnt_big: 0,
+                in_burnt_mid: 0,
+                in_burnt_lil: 0,
+                in_burnt_address: 0,
+                in_burnt_tx: 0,
+                payout_miner: 25,
+                payout_node_big: 1725,
+                payout_node_mid: 838,
+                payout_node_lil: 160
+              });
+              inc.save(function(){
+                exit();
+              });
+              console.log("INFO: create income stats");
+            }
+          });
+      });
+    } else if (statsName == 'incomeBurnAddress'){
+      //all burn value inf 2000 SIN is consider as income from burn address
+      db.get_stats(settings.coin, function(stats){
+        var deepth1d = stats.last - 720;
+        var height = stats.last;
+        const cursor = Tx.aggregate([
+                          {$match: {
+                             $and: [
+                                 {vout: {$elemMatch: {addresses: {$in: ["SinBurnAddressGovernanceVoteba5vkQ","SinBurnAddress123456789SuqaXbx3AMC","SinBurnAddressForMetadataXXXXEU2mj","SinBurnAddressForNotifyXXXXXc42TcT"]}}}},
+                                 {blockindex: {$gt: deepth1d}},
+                                 {blockindex: {$lt: height}},
+                                 {vout: {$elemMatch: {amount: {$lt: 200000000000}}}},
+                               ]
+                             }},
+                             { "$unwind": "$vout" },
+                             {$group: {
+                               "_id": "$vout.addresses",
+                               count: { $sum: 1 },
+                               total: { $sum: {
+                                 $cond: [
+                                   {$or: [
+                                     {$eq: ["$vout.addresses", "SinBurnAddressGovernanceVoteba5vkQ"]},
+                                     {$eq: ["$vout.addresses", "SinBurnAddress123456789SuqaXbx3AMC"]},
+                                     {$eq: ["$vout.addresses", "SinBurnAddressForMetadataXXXXEU2mj"]},
+                                     {$eq: ["$vout.addresses", "SinBurnAddressForNotifyXXXXXc42TcT"]},
+                                     ]}
+                                     ,{$divide: ["$vout.amount", 100000000]},
+                                     0
+                                  ]}
+                               }
+                             }},
+                             {$match: {total: {$gt: 0}}}
+                         ]).cursor({ batchSize: 1000}).exec();
+        const data = [];
+        const result = async function () {
+          var doc;
+          var total = 0;
+          while ((doc = await cursor.next())) {
+            if(doc){
+              total = total + doc['total'];
+            }
+          }
+          Income.findOne({coin: settings.coin}, function(err, income){
+            if(income){
+              Income.updateOne({coin: settings.coin}, {
+                in_burnt_address: total
+              }, function() {exit();});
+              console.log("INFO: update income from all burn address: " + total);
+            } else {
+              var inc = new Income({
+                coin: settings.coin,
+                in_burnt_big: 0,
+                in_burnt_mid: 0,
+                in_burnt_lil: 0,
+                in_burnt_address: total,
+                in_burnt_tx: 0,
+                payout_miner: 25,
+                payout_node_big: 1725,
+                payout_node_mid: 838,
+                payout_node_lil: 160
+              });
+              inc.save(function(){
+                exit();
+              });
+              console.log("INFO: create income stats");
+            }
+          });
         };
         result();
       });

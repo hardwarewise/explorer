@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  script(src='/vendor/jqplot/plugins/jqplot.meterGaugeRenderer.min.js')
   script.
       $(document).ready(function(){
         $('##{active}').addClass('active');
@@ -39,7 +40,7 @@ block content
             $("#barTxStatsValue").text('');
             plot1 = $.jqplot('barTxStatsValue', [vTx], {
                    title: 'Transaction values (SIN) per day',
-                   seriesColors:['#FF3333'],
+                   seriesColors:['silver'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
@@ -59,7 +60,7 @@ block content
             $("#barTxStatsNumber").text('');
             plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
-                   seriesColors:['#73C774'],
+                   seriesColors:['#cd7f32'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
@@ -83,7 +84,7 @@ block content
             var label=["Expired", "1D", "7D", "14D", "1M", "2M", "3M", "4M", "5M", "6M", "9M", "1Y"]
             plot2 = $.jqplot('barExpiredHeight', [exp], {
                    title: 'Infinity node expire timeline',
-                   seriesColors:['#FF8204'],
+                   seriesColors:['gold'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
@@ -99,6 +100,29 @@ block content
                        ticks: label
                      }
                    }
+            });
+            $("#gaugeIncome").text('');
+            var indexIncome = (((json.in_burnt_big + json.in_burnt_mid + json.in_burnt_lil)*720 + json.in_burnt_address) * 100) / 
+              ((json.payout_miner + json.payout_node_big + json.payout_node_mid + json.payout_node_lil) * 720);
+            var inflation = (json.payout_miner + json.payout_node_big + json.payout_node_mid + json.payout_node_lil) -
+              (json.in_burnt_big + json.in_burnt_mid + json.in_burnt_lil);
+            var sIndex = [Math.floor(indexIncome)];
+            plot10 = $.jqplot('gaugeIncome',[sIndex], {
+              title: 'Network income ' + (indexIncome).toFixed(2) + '%',
+              grid: {background: 'transparent'},
+              seriesDefaults: {
+                renderer: $.jqplot.MeterGaugeRenderer,
+                  rendererOptions: {
+                    label: 'Deficit ' + (inflation).toFixed(2) + ' SIN per block',
+                    labelPosition: 'bottom',
+                    showTickLabels: true,
+                    min: 0,
+                    max: 200,
+                    background: '#D6DCE5',
+                    intervals:[50, 100, 150, 200],
+                    intervalColors:['#66cc66', '#93b75f', '#E7E658', '#cc6666']
+                }
+              }
             });
             var roi_big = 1000000 / ((720 / json.inf_online_big) * 1752);
             var roi_mid = 500000 / ((720 / json.inf_online_mid) * 838);
@@ -122,7 +146,7 @@ block content
             .panel-heading
               strong #{settings.locale.network}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr
                     td
@@ -164,7 +188,7 @@ block content
             .panel-heading
               strong #{settings.locale.addresses_stat}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr
                     td
@@ -191,7 +215,7 @@ block content
             .panel-heading
               strong #{settings.locale.burn_stat}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr
                     td
@@ -218,7 +242,7 @@ block content
             .panel-heading
               strong #{settings.locale.infinitynode_stat}
             .panel-body
-              table.table.table-bordered.summary-table(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
+              table.table.table-bordered.summary-table(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')
                 tbody
                   tr  
                     td
@@ -242,11 +266,11 @@ block content
                       span(style='font-size:16px')#n_totalnode -
     .row.text-center(style='margin-bottom:15px;')
        .col-md-6(style="margin-bottom: 4%; float: left; width: 48%; valign: bottom;padding: 10px 10px 10px 10px;")
-         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barExpiredHeight
+         div(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barExpiredHeight
          br
-         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsValue
+         div(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsValue
          br
-         div(style='background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsNumber
+         div(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#barTxStatsNumber
        .col-md-6(style="margin-bottom: 4%; float: right; width: 48%;padding: 10px 10px 10px 10px;")
         .row.text-center
            link(rel='stylesheet', href='/stylesheets/assets/helpers/animate.css')
@@ -273,7 +297,7 @@ block content
            script(src='//d3js.org/topojson.v1.min.js')
            script(src='//d3js.org/d3.geo.projection.v0.min.js')
            script(src='//d3js.org/queue.v1.min.js')
-           div.row(id="mapcontainer" align="center" style="background-color: rgba(78, 93, 108, 0.1);border-radius:10px;font-weight:bold;color:white;border:none !important;")
+           div.row(id="mapcontainer" align="center" style="background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;")
            link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
            script(src='/javascripts/worldmap.v1.js')
            script(src='/javascripts/jqplot.pointLabels.js')
@@ -349,4 +373,6 @@ block content
                  createmap.update(data, "barchart");
                }})
              }, 4000);
-
+           br
+           div(style='background-color: rgba(0, 2, 59, 1);border-radius:10px;font-weight:bold;color:white;border:none !important;')#gaugeIncome
+           br

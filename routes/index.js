@@ -304,6 +304,15 @@ router.get('/summary', function(req, res) {
                                         inf_online_big: summarystats.data[0].inf_online_big,
                                         inf_online_mid: summarystats.data[0].inf_online_mid,
                                         inf_online_lil: summarystats.data[0].inf_online_lil,
+                                        in_burnt_big: summarystats.data[0].in_burnt_big,
+                                        in_burnt_mid: summarystats.data[0].in_burnt_mid,
+                                        in_burnt_lil: summarystats.data[0].in_burnt_lil,
+                                        in_burnt_address: summarystats.data[0].in_burnt_address,
+                                        in_burnt_tx: summarystats.data[0].in_burnt_tx,
+                                        payout_miner: summarystats.data[0].payout_miner,
+                                        payout_node_big: summarystats.data[0].payout_node_big,
+                                        payout_node_mid: summarystats.data[0].payout_node_mid,
+                                        payout_node_lil: summarystats.data[0].payout_node_lil,
 			});
 		}else{
 			res.send(summarystats);
@@ -555,6 +564,7 @@ router.get('/ext/summary', function(req, res) {
           db.get_stats(settings.coin, function (stats) {
             lib.get_gettermdepositstats(function(termdepositstats){
               lib.get_officialpoolinfo(function(officialpoolinfo){
+               db.get_income(settings.coin, function(income) {
                 if (hashrate == 'There was an error. Check your console.') {
                   hashrate = 0;
                 }
@@ -607,7 +617,17 @@ router.get('/ext/summary', function(req, res) {
                   inf_online_big: stats.inf_online_big,
                   inf_online_mid: stats.inf_online_mid,
                   inf_online_lil: stats.inf_online_lil,
+                  in_burnt_big: income.in_burnt_big,
+                  in_burnt_mid: income.in_burnt_mid,
+                  in_burnt_lil: income.in_burnt_lil,
+                  in_burnt_address: income.in_burnt_address,
+                  in_burnt_tx: income.in_burnt_tx,
+                  payout_miner: income.payout_miner,
+                  payout_node_big: income.payout_node_big,
+                  payout_node_mid: income.payout_node_mid,
+                  payout_node_lil: income.payout_node_lil
                 }]});
+               });
               });
             });
           });
