@@ -285,7 +285,9 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
               console.log("SinBurnAddressForMetadataXXXXEU2mj: " + burnMetadataBalance);
               console.log("SinBurnAddressForNotifyXXXXXc42TcT: " + burnNotificationBalance);
               console.log("TOTAL: " + (burnGeneralBalance + burnGovernanceVoteBalance + burnMetadataBalance + burnNotificationBalance) / 100000000);
-              exit();
+              Stats.updateOne({coin: settings.coin}, {
+                fee_burn: ((burnGeneralBalance + burnGovernanceVoteBalance + burnMetadataBalance + burnNotificationBalance) / 100000000),
+              }, function() {exit();});
             });
           });
         });

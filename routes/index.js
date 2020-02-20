@@ -258,7 +258,7 @@ router.get('/summary', function(req, res) {
 			res.send({
 					difficulty: summarystats.data[0].difficulty,
 					difficultyHybrid: summarystats.data[0].difficultyHybrid,
-					supply: summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode,
+					supply: summarystats.data[0].supply - summarystats.data[0].burnFee,
 					hashrate: summarystats.data[0].hashrate,
                                         known_hashrate: summarystats.data[0].known_hashrate,
 					lastPrice: summarystats.data[0].lastPrice,
@@ -582,7 +582,7 @@ router.get('/ext/summary', function(req, res) {
                   explorerActiveAddresses: stats.active_addresses,
                   explorerTop10: stats.top10,
                   explorerTop50: stats.top50,
-                  burnFee: termdepositstats.nBurnFee,
+                  burnFee: stats.fee_burn,
                   burnNode: stats.node_burn,
                   poolHeight: officialpoolinfo.height,
                   tx_d0_count: stats.tx_d0_count,

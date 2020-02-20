@@ -23,9 +23,9 @@ block content
             $("#lblConnections").text(json.connections + ' connections');
             $("#lblBlockcount").text('[E] ' + json.explorerHeight + ' / [D] ' + json.blockcount + ' / [P] ' + json.poolHeight);
             $("#lblX1").text(' ');
-            $("#burnfee").text(formatNumber(Math.floor(json.burnFee)));
+            $("#burnfee").text(formatNumber(Math.floor(json.burnFee - json.burnNode)));
             $("#burnnode").text(formatNumber(json.burnNode));
-            $("#burntotal").text(formatNumber(json.burnFee + json.burnNode));
+            $("#burntotal").text(formatNumber(Math.floor(json.burnFee)));
             $("#explorerAddresses").text(json.explorerAddresses);
             $("#explorerActiveAddresses").text(json.explorerActiveAddresses);
             $("#explorerTop10").text(formatNumber(Math.floor(json.explorerTop10)));
