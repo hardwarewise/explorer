@@ -1,6 +1,6 @@
 #bin/bash
 
-cd /home/sinteam/explorer
+cd ~/explorer
 
 PID=`cat tmp/cluster.pid`
 

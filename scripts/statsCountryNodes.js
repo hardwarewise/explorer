@@ -14,6 +14,8 @@ var mongoose = require('mongoose')
   , Nodes = require('../models/nodes')
   , request = require('request');
 
+mongoose.set('useCreateIndex', true);
+
 var COUNT = 5000; //number of blocks to index
 
 function exit() {
@@ -27,7 +29,7 @@ dbString = dbString + '@' + settings.dbsettings.address;
 dbString = dbString + ':' + settings.dbsettings.port;
 dbString = dbString + '/' + settings.dbsettings.database;
 
-mongoose.connect(dbString, function(err) {
+mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
   if (err) {
     console.log('Unable to connect to database: %s', dbString);
     console.log('Aborting');
