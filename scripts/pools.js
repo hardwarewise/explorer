@@ -4,12 +4,13 @@ var mongoose = require('mongoose')
   , db = require('../lib/database')
   , Tx = require('../models/tx')
   , Pools = require('../models/pools')
-  , Address = require('../models/address')  
-  , Richlist = require('../models/richlist')  
-  , Stats = require('../models/stats')  
+  , Address = require('../models/address')
+  , Richlist = require('../models/richlist')
+  , Stats = require('../models/stats')
   , settings = require('../lib/settings')
   , fs = require('fs');
 
+mongoose.set('useCreateIndex', true);
 
 function exit() {
   mongoose.disconnect();
@@ -22,7 +23,7 @@ dbString = dbString + '@' + settings.dbsettings.address;
 dbString = dbString + ':' + settings.dbsettings.port;
 dbString = dbString + '/' + settings.dbsettings.database;
 
-mongoose.connect(dbString, function(err) {
+mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
   if (err) {
     console.log('Unable to connect to database: %s', dbString);
     console.log('Aborting');

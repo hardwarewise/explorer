@@ -7,6 +7,8 @@ var mongoose = require('mongoose')
   , settings = require('../lib/settings')
   , fs = require('fs');
 
+mongoose.set('useCreateIndex', true);
+
 var mode = 'update';
 var database = 'index';
 var checkBegin = 1;
@@ -130,7 +132,7 @@ is_locked(function (exists) {
   } else {
     create_lock(function (){
       console.log("script launched with pid: " + process.pid);
-      mongoose.connect(dbString, function(err) {
+      mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
         if (err) {
           console.log('Unable to connect to database: %s', dbString);
           console.log('Aborting');
@@ -151,11 +153,11 @@ is_locked(function (exists) {
                   if (mode == 'reindex') {
                     Tx.remove({}, function(err) {
                       Address.remove({}, function(err2) {
-                        Richlist.update({coin: settings.coin}, {
+                        Richlist.updateOne({coin: settings.coin}, {
                           received: [],
                           balance: [],
                         }, function(err3) {
-                          Stats.update({coin: settings.coin}, {
+                          Stats.updateOne({coin: settings.coin}, {
                             last: 0,
                           }, function() {
                             console.log('index cleared (reindex)');

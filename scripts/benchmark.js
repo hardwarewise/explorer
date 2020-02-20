@@ -4,6 +4,7 @@ var mongoose = require('mongoose')
   , Address = require('../models/address')  
   , settings = require('../lib/settings');
 
+mongoose.set('useCreateIndex', true);
 
 var COUNT = 5000; //number of blocks to index
 
@@ -18,7 +19,7 @@ dbString = dbString + '@' + settings.dbsettings.address;
 dbString = dbString + ':' + settings.dbsettings.port;
 dbString = dbString + "/IQUIDUS-BENCHMARK";
 
-mongoose.connect(dbString, function(err) {
+mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
   if (err) {
     console.log('Unable to connect to database: %s', dbString);
     console.log('Aborting');
