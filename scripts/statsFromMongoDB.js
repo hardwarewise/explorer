@@ -29,6 +29,7 @@ function  usage(){
   console.log('infExpired            infinity node expired stats');
   console.log('incomeBurnNode        income from all burn node');
   console.log('incomeBurnAddress     income from all burn address');
+  console.log('totalBurnAddress      total burn from all special address');
   console.log('tx7days               number and amount of 7 previous days');
   console.log('');
   process.exit(0);
@@ -266,6 +267,26 @@ mongoose.connect(dbString, function(err) {
               console.log("INFO: create income stats");
             }
           });
+      });
+    } else if (statsName == 'totalBurnAddress'){
+      db.get_address("SinBurnAddress123456789SuqaXbx3AMC", function(burnGeneral){
+        db.get_address("SinBurnAddressGovernanceVoteba5vkQ", function(burnGovernanceVote){
+          db.get_address("SinBurnAddressForMetadataXXXXEU2mj", function(burnMetadata){
+            db.get_address("SinBurnAddressForNotifyXXXXXc42TcT", function(burnNotification){
+              var burnGeneralBalance = 0, burnGovernanceVoteBalance = 0, burnMetadataBalance = 0, burnNotificationBalance = 0;
+              if(burnGeneral) burnGeneralBalance = burnGeneral.balance;
+              if(burnGovernanceVote) burnGovernanceVoteBalance = burnGovernanceVote.balance;
+              if(burnMetadata) burnMetadataBalance = burnMetadata.balance;
+              if(burnNotification) burnNotificationBalance = burnNotification.balance;
+              console.log("SinBurnAddress123456789SuqaXbx3AMC: " + burnGeneralBalance);
+              console.log("SinBurnAddressGovernanceVoteba5vkQ: " + burnGovernanceVoteBalance);
+              console.log("SinBurnAddressForMetadataXXXXEU2mj: " + burnMetadataBalance);
+              console.log("SinBurnAddressForNotifyXXXXXc42TcT: " + burnNotificationBalance);
+              console.log("TOTAL: " + (burnGeneralBalance + burnGovernanceVoteBalance + burnMetadataBalance + burnNotificationBalance) / 100000000);
+              exit();
+            });
+          });
+        });
       });
     } else if (statsName == 'incomeBurnAddress'){
       //all burn value inf 2000 SIN is consider as income from burn address
