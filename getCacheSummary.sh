@@ -3,17 +3,17 @@
 #Update address stats before generate the summary. coinstats is updated
 #cd /home/sinteam/explorer && wget --timeout=0 -O cache/address.json "http://explorer3.sinovate.io/ext/addressstats"
 
-cd /home/sinteam/explorer && wget --timeout=0 -O cache/summary.json.tmp "http://explorer3.sinovate.io/ext/summary"
+cd ~/explorer && wget --timeout=0 -O cache/summary.json.tmp "http://127.0.0.1:8080/ext/summary"
 
 sleep 15
 
-ERROR=`grep "There was an error" /home/sinteam/explorer/summary.json.tmp | wc -l`
+ERROR=`grep "There was an error" ~/explorer/summary.json.tmp | wc -l`
 
 if [ "$ERROR" -eq "0" ]; then
 
 echo "no ERROR found!"
-rm /home/sinteam/explorer/cache/summary.json
-cp /home/sinteam/explorer/cache/summary.json.tmp /home/sinteam/explorer/cache/summary.json
+rm ~/explorer/cache/summary.json
+cp ~/explorer/cache/summary.json.tmp ~/explorer/cache/summary.json
 
 else
 

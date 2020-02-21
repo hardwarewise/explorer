@@ -38,6 +38,10 @@ sleep 5
 
 sleep 5
 
+/usr/bin/nodejs --stack-size=35000 scripts/statsFromMongoDB.js totalBurnAddress
+
+sleep 5
+
 /usr/bin/nodejs --stack-size=35000 scripts/statsFromMongoDB.js tx7days
 
 sleep 5

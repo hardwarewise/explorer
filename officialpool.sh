@@ -1,6 +1,6 @@
 #bin/bash
 
-cd /home/sinteam/explorer && wget --timeout=0 -O cache/sin.pool.sinovate.io.json_temp "https://pool.sinovate.io/api/currencies/SIN"
+cd ~/explorer && wget --timeout=0 -O cache/sin.pool.sinovate.io.json_temp "https://pool.sinovate.io/api/currencies/SIN"
 
 sleep 15
 
@@ -10,7 +10,7 @@ if [ "$INFO" -eq "0" ]; then
     echo "ERROR: no new infos"
 else
     echo "INFO: updating..."
-    rm /home/sinteam/explorer/cache/sin.pool.sinovate.io.json
-    mv /home/sinteam/explorer/cache/sin.pool.sinovate.io.json_temp /home/sinteam/explorer/cache/sin.pool.sinovate.io.json
+    rm ~/explorer/cache/sin.pool.sinovate.io.json
+    mv ~/explorer/cache/sin.pool.sinovate.io.json_temp ~/explorer/cache/sin.pool.sinovate.io.json
 fi
 
