@@ -324,7 +324,7 @@ router.get('/summary', function(req, res) {
 
 router.get('/getmoneysupply', function(req, res) {
     var summarystatsFilename = "summary.json";
-	summarystatsFilename = "./" + summarystatsFilename;
+	summarystatsFilename = "./cache/" + summarystatsFilename;
 
 	var summarystatsStr;
 	try{
@@ -341,7 +341,7 @@ router.get('/getmoneysupply', function(req, res) {
 		if(summarystatsStr) {
 			summarystatsStr = jsonminify(summarystatsStr).replace(",]","]").replace(",}","}");
 			summarystats = JSON.parse(summarystatsStr);
-			res.send( ' ' + (summarystats.data[0].supply - summarystats.data[0].burnFee - summarystats.data[0].burnNode));
+			res.send( ' ' + (summarystats.data[0].supply - summarystats.data[0].burnFee));
 		}else{
 			res.send(' ' + 0);
 		}
