@@ -1,6 +1,6 @@
 #bin/bash
 
-cd /home/sinteam/explorer
+cd ~/explorer
 
 /usr/bin/nodejs --stack-size=35000 scripts/statsFromMongoDB.js topAddress
 
