@@ -1,6 +1,6 @@
 #bin/bash
 
-cd /home/sinteam/explorer
+cd ~/explorer
 NB=`pgrep -f "nodejs --stack-size=10000" | wc -l`
 echo $NB
 if [ "$NB" -eq "0" ]; then 
