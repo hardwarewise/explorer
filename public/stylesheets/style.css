@@ -247,3 +247,9 @@ tr {
   padding: 1px 3px;
   background-color: transparent;
 }
+.col-md-12{
+
+    background: #040448;
+    padding: 20px;
+    border-radius: 20px;
+}

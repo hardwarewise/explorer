@@ -16,7 +16,7 @@ block content
                       for (var i = 0; i < json.data.length; i++) {
                         if(json.data[i]['pool_hashrate'] > 0){
                           const item = {}
-                          item['pool'] = "<a href='http://" + json.data[i]['homepage'] + "'>" + json.data[i]['pool_name'] + "</a>";
+                          item['pool'] = "<a href='" + json.data[i]['homepage'] + "'>" + json.data[i]['pool_name'] + "</a>";
                           item['block_height'] = json.data[i]['block_height'];
                           item['workers'] = json.data[i]['workers'];
                           item['blocks_in_24h'] = json.data[i]['blocks_in_24h'];
