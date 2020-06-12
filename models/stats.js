@@ -17,6 +17,7 @@ var StatsSchema = new Schema({
   top50: { type: Number, default: 0 },
   node_burn: { type: Number, default: 0 },
   fee_burn: { type: Number, default: 0 },
+  coin_view_height: { type: Number, default: 0 },
   tx_d0_count: { type: Number, default: 0 },
   tx_d0_value: { type: Number, default: 0 },
   tx_d1_count: { type: Number, default: 0 },

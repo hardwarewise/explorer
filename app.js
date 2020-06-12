@@ -89,6 +89,16 @@ app.use('/ext/getaddress/:hash', function(req,res){
   });
 });
 
+app.use('/ext/coinsview/:hash', function(req,res){
+  db.get_coins_by_address(req.params['hash'], function(address){
+    if (address) {
+      res.send(address);
+    } else {
+      res.send({ error: 'address not found.', hash: req.params['hash']})
+    }
+  });
+});
+
 app.use('/ext/getbalance/:hash', function(req,res){
   db.get_address(req.params['hash'], function(address){
     if (address) {

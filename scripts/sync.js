@@ -19,8 +19,9 @@ function usage() {
   console.log('Usage: node scripts/sync.js [database] [mode]');
   console.log('');
   console.log('database: (required)');
-  console.log('index [mode] Main index: coin info/stats, transactions & addresses');
-  console.log('market       Market data: summaries, orderbooks, trade history & chartdata')
+  console.log('index [mode]                    Main index: coin info/stats, transactions & addresses');
+  console.log('market                          Market data: summaries, orderbooks, trade history & chartdata')
+  console.log('coin [mode] [begin] [end]       Coin view: Outpoint, spent or unspend')
   console.log('');
   console.log('mode: (required for index database only)');
   console.log('update       Updates index from last sync to current block');
@@ -52,6 +53,9 @@ if (process.argv[2] == 'index') {
     case 'reindex':
       mode = 'reindex';
       break;
+    case 'reindex-rich':
+      mode = 'reindex-rich';
+      break;
     default:
       usage();
     }
@@ -61,6 +65,27 @@ if (process.argv[2] == 'index') {
   }
 } else if (process.argv[2] == 'market'){
   database = 'market';
+} else if (process.argv[2] == 'coin'){
+  database = 'coin';
+  if (process.argv.length <3) {
+    usage();
+  } else {
+    switch(process.argv[3])
+    {
+    case 'update':
+      mode = 'update';
+      break;
+    case 'disconnect':
+      mode = 'disconnect';
+      break;
+    default:
+      usage();
+    }
+    if (mode == 'update' && process.argv[4] > 0 && process.argv[5] > 0){
+       checkBegin = process.argv[4];
+       checkEnd = process.argv[5];
+    }
+  }
 } else {
   usage();
 }
@@ -131,7 +156,7 @@ is_locked(function (exists) {
     process.exit(0);
   } else {
     create_lock(function (){
-      console.log("script launched with pid: " + process.pid);
+      console.log("script launched with pid: " + process.pid + " database: " + database);
       mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
         if (err) {
           console.log('Unable to connect to database: %s', dbString);
@@ -193,12 +218,40 @@ is_locked(function (exists) {
                         });
                       });
                     });
+                  } else if (mode == 'reindex-rich') {
+                    console.log('update started');
+                    db.update_tx_db(settings.coin, stats.last, stats.count, settings.check_timeout, function(){
+                      console.log('update finished');
+                      db.check_richlist(settings.coin, function(exists){
+                        if (exists == true) {
+                          console.log('richlist entry found, deleting now..');
+                        }
+                        db.delete_richlist(settings.coin, function(deleted) {
+                          if (deleted == true) {
+                            console.log('richlist entry deleted');
+                          }
+                          db.create_richlist(settings.coin, function() {
+                            console.log('richlist created.');
+                            db.update_richlist('received', function(){
+                              console.log('richlist updated received.');
+                              db.update_richlist('balance', function(){
+                                console.log('richlist updated balance.');
+                                db.get_stats(settings.coin, function(nstats){
+                                  console.log('update complete (block: %s)', nstats.last);
+                                  exit();
+                                });
+                              });
+                            });
+                          });
+                        });
+                      }); 
+                    });
                   }
                 });
               });
             }
           });
-        } else {
+        } else if (database == 'market') {
           //update markets
           var markets = settings.markets.enabled;
           var complete = 0;
@@ -230,6 +283,27 @@ is_locked(function (exists) {
               }
             });
           }
+        } else if (database == 'coin') {
+          db.check_stats(settings.coin, function(exists) {
+            if (exists == false) {
+              console.log('Run \'npm start\' to create database structures before running this script.');
+              exit();
+            } else {
+              if (mode == 'update') {
+                console.log('update coin started');
+                db.update_coin_db(settings.coin, checkBegin, checkEnd, settings.update_timeout, function(){
+                  console.log('update coin finished');
+                  exit();
+                });
+              } else if (mode == 'disconnect') {
+                console.log('disconnect coins of last block in stats');
+                db.delete_coin_lastStatsHeight(settings.coin, function(){
+                  console.log('coins deleted');
+                  exit();
+                });
+              }
+            }
+          });
         }
       });
     });
