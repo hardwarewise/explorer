@@ -6,5 +6,5 @@ echo $NB
 if [ "$NB" -eq "0" ]; then 
 rm tmp/index.pid
 /usr/bin/nodejs --stack-size=10000 scripts/sync.js index update &
-#/usr/bin/nodejs --stack-size=35000 scripts/sync.js index reindex &
+/usr/bin/nodejs --stack-size=10000 scripts/sync.js coin update 1 1000000 &
 fi
