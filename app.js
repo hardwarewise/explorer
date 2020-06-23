@@ -90,12 +90,32 @@ app.use('/ext/getaddress/:hash', function(req,res){
 });
 
 app.use('/ext/coinsview/:hash', function(req,res){
-  db.get_coins_by_address(req.params['hash'], function(address){
-    if (address) {
-      res.send(address);
-    } else {
-      res.send({ error: 'address not found.', hash: req.params['hash']})
-    }
+  db.get_stats(settings.coin, function(stats){
+    db.get_coins_by_address(req.params['hash'], function(coins){
+      if (coins) {
+        var balance_spendable = 0, balance_timelocked = 0;
+        if(coins.length && coins.length > 0){
+          for(int i=0; i < coins.length; i++){
+            if(coins[i].spendable == 1 && coins[i].spendHeight == 0 && type != "checklocktimeverify"){
+              balance_spendable = balance_spendable + coins[i].value;
+            }
+            if(coins[i].spendable == 1 && coins[i].spendHeight == 0 && type == "checklocktimeverify"){
+              balance_timelocked = balance_timelocked + coins[i].value;
+            }
+          }
+        }
+        var c_ext = {
+            address: req.params['hash'],
+            spendable: balance_spendable,
+            timelocked: balance_timelocked,
+            height: stats.count,
+            txes: coins
+        }
+        res.send(c_ext);
+      } else {
+        res.send({ error: 'address not found.', hash: req.params['hash']})
+      }
+    });
   });
 });
 
