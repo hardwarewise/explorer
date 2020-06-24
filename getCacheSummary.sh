@@ -3,7 +3,7 @@
 #Update address stats before generate the summary. coinstats is updated
 #cd /home/sinteam/explorer && wget --timeout=0 -O cache/address.json "http://explorer3.sinovate.io/ext/addressstats"
 
-cd ~/explorer && wget --timeout=0 -O cache/summary.json.tmp "http://127.0.0.1:8080/ext/summary"
+cd ~/explorer && wget --timeout=0 -O cache/summary.json.tmp "http://127.0.0.1:8081/ext/summary"
 
 sleep 15
 

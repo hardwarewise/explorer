@@ -95,7 +95,7 @@ app.use('/ext/coinsview/:hash', function(req,res){
       if (coins) {
         var balance_spendable = 0, balance_timelocked = 0;
         if(coins.length && coins.length > 0){
-          for(int i=0; i < coins.length; i++){
+          for(var i=0; i < coins.length; i++){
             if(coins[i].spendable == 1 && coins[i].spendHeight == 0 && type != "checklocktimeverify"){
               balance_spendable = balance_spendable + coins[i].value;
             }
