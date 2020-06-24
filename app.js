@@ -94,16 +94,16 @@ app.use('/ext/coinsview/:hash', function(req,res){
     db.get_coins_by_address(req.params['hash'], function(coins){
       if (coins) {
         var balance_spendable = 0, balance_timelocked = 0;
-        if(coins.length && coins.length > 0){
-          for(var i=0; i < coins.length; i++){
-            if(coins[i].spendable == 1 && coins[i].spendHeight == 0 && type != "checklocktimeverify"){
-              balance_spendable = balance_spendable + coins[i].value;
+          for(const coin of coins){
+				console.log(coin.spendable + " " +coin.spendHeight);
+            if(coin.spendable == 1 && coin.spendHeight == 0 && coin.type != "checklocktimeverify"){
+              balance_spendable = balance_spendable + parseFloat(coin.value);
+
             }
-            if(coins[i].spendable == 1 && coins[i].spendHeight == 0 && type == "checklocktimeverify"){
-              balance_timelocked = balance_timelocked + coins[i].value;
+            if(coin.spendable == 1 && coin.spendHeight == 0 && coin.type == "checklocktimeverify"){
+              balance_timelocked = balance_timelocked + parseFloat(coin.value);
             }
           }
-        }
         var c_ext = {
             address: req.params['hash'],
             spendable: balance_spendable,
