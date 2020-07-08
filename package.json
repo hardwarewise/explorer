@@ -28,7 +28,7 @@
     "nan": "^2.14.0",
     "node-cache": "^4.2.0",
     "qr-image": "~2.0.0",
-    "request": "^2.88.0",
+    "request": "^2.88.2",
     "static-favicon": "~1.0.0"
   },
   "devDependencies": {
