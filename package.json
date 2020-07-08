@@ -20,7 +20,7 @@
     "forever": "^1.0.0",
     "jade": "^1.11.0",
     "jsonminify": "0.2.3",
-    "markdown-js": "0.0.3",
+    "markdown-js": "0.0.4",
     "moment": "^2.24.0",
     "mongodb": "^3.4.1",
     "mongoose": "^5.8.3",
