@@ -27,6 +27,11 @@ mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, f
     console.log('Aborting');
     exit();
   } else {
+   Inf.remove({}, function(err){
+    if(err){
+       console.log('ERROR delete blog');
+       exit();
+    }
     lib.get_infinitynode(function(infnodes){
       const keys = Object.keys(infnodes);
       lib.syncLoop(keys.length, function (loop) {
@@ -101,6 +106,7 @@ mongoose.connect(dbString,{ useNewUrlParser: true, useUnifiedTopology: true }, f
         exit();
       });
     });
+   });
   }// end else
 });
 

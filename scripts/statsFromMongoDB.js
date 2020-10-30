@@ -133,14 +133,21 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
           var node;
           var totalBIG = 0, totalMID = 0, totalLIL = 0;
           var onlineBIG = 0, onlineMID = 0, onlineLIL = 0;
+          var expireBIG = 0, expireMID = 0, expireLIL = 0;
           for (var i=0; i < infnodes.length; i++ ){
             var node = infnodes[i];
             if(node.type == 10) {totalBIG = totalBIG + 1;}
             if(node.type == 5)  {totalMID = totalMID + 1;}
             if(node.type == 1)  {totalLIL = totalLIL + 1;}
-            if(node.last_paid >= deamonH - node.last_stm_size*2 && node.type == 10) {onlineBIG = onlineBIG + 1;}
+            /*if(node.last_paid >= deamonH - node.last_stm_size*2 && node.type == 10) {onlineBIG = onlineBIG + 1;}
             if(node.last_paid >= deamonH - node.last_stm_size*2 && node.type == 5)  {onlineMID = onlineMID + 1;}
-            if(node.last_paid >= deamonH - node.last_stm_size*2 && node.type == 1)  {onlineLIL = onlineLIL + 1;}
+            if(node.last_paid >= deamonH - node.last_stm_size*2 && node.type == 1)  {onlineLIL = onlineLIL + 1;}*/
+            if(node.expired_height >= deamonH && node.type == 10) {onlineBIG = onlineBIG + 1;}
+            if(node.expired_height < deamonH && node.type == 10) {expireBIG = expireBIG + 1;}
+            if(node.expired_height >= deamonH && node.type == 5) {onlineMID = onlineMID + 1;}
+            if(node.expired_height < deamonH && node.type == 5) {expireMID = expireMID + 1;}
+            if(node.expired_height >= deamonH && node.type == 1) {onlineLIL = onlineLIL + 1;}
+            if(node.expired_height < deamonH && node.type == 1) {expireLIL = expireLIL + 1;}
           }
           Stats.updateOne({coin: settings.coin}, {
             inf_burnt_big: totalBIG,
@@ -150,8 +157,9 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
             inf_online_mid: onlineMID,
             inf_online_lil: onlineLIL,
           }, function() {exit();});
-          console.log("INFO: update totalBID: " + totalBIG + " totalMID: " + totalMID + " totalLIL: " + totalLIL);
-          console.log("INFO: update onlineBIG: " + onlineBIG + " onlineMID: " + onlineMID + " onlineLIL: " + onlineLIL);
+          console.log("INFO: update total at height(" + deamonH + "): totalBIG: " + totalBIG + " totalMID: " + totalMID + " totalLIL: " + totalLIL);
+          console.log("INFO: update online at height(" + deamonH + "): onlineBIG: " + onlineBIG + " onlineMID: " + onlineMID + " onlineLIL: " + onlineLIL);
+          console.log("INFO: update expire at height(" + deamonH + "): expireBIG: " + expireBIG + " expireMID: " + expireMID + " expireLIL: " + expireLIL);
         });
       });
     } else if (statsName == 'infExpired'){
