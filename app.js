@@ -72,16 +72,18 @@ app.use('/ext/getmoneysupply', function(req,res){
   });
 });
 
-app.use('/ext/getaddress/:hash', function(req,res){
+app.use('/ext/getaddress/:hash/:txesLimit', function(req,res){
   db.get_address(req.params['hash'], function(address){
     if (address) {
       var count = address.txs.length;
       var hashes = address.txs.reverse();
+      var limit = req.params['txesLimit'];
+      console.log("getaddress: txesLimit: " + limit);
       var txes = [];
       lib.syncLoop(count, function (loop) {
         var i = loop.iteration();
         db.get_tx(hashes[i].addresses, function(tx) {
-          if (tx) {
+          if (tx && (limit == 0 || (limit > 0 && limit <i))) {
             txes.push(tx);
             loop.next();
           } else {
