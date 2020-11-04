@@ -83,7 +83,7 @@ app.use('/ext/getaddress/:hash/:txesLimit', function(req,res){
       lib.syncLoop(count, function (loop) {
         var i = loop.iteration();
         db.get_tx(hashes[i].addresses, function(tx) {
-          if (tx && (limit == 0 || (limit > 0 && limit <i))) {
+          if (tx && (limit == 0 || (limit > 0 && i < limit))) {
             txes.push(tx);
             loop.next();
           } else {
