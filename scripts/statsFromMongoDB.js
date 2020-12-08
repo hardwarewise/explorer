@@ -255,7 +255,10 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
               Income.updateOne({coin: settings.coin}, {
                 in_burnt_big: income_big,
                 in_burnt_mid: income_mid,
-                in_burnt_lil: income_lil
+                in_burnt_lil: income_lil,
+                payout_node_big: 1725,
+                payout_node_mid: 838,
+                payout_node_lil: 560
               }, function() {exit();});
               console.log("INFO: update income from all burn node: " + income_big + " " + income_mid + " " + income_lil);
             } else {
@@ -269,7 +272,7 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
                 payout_miner: 25,
                 payout_node_big: 1725,
                 payout_node_mid: 838,
-                payout_node_lil: 160
+                payout_node_lil: 560
               });
               inc.save(function(){
                 exit();
@@ -359,7 +362,7 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
                 payout_miner: 25,
                 payout_node_big: 1725,
                 payout_node_mid: 838,
-                payout_node_lil: 160
+                payout_node_lil: 560
               });
               inc.save(function(){
                 exit();
