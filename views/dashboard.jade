@@ -21,7 +21,7 @@ block content
             hashrate = json.hashrate;
             $("#lastPrice").text(json.lastPrice.toFixed(8));
             $("#lblConnections").text(json.connections + ' connections');
-            $("#lblBlockcount").text('[E] ' + json.explorerHeight + ' / [D] ' + json.blockcount + ' / [P] ' + json.poolHeight);
+            $("#lblBlockcount").text('[E] ' + json.explorerHeight + ' / [D] ' + json.blockcount);
             $("#lblX1").text(' ');
             $("#burnfee").text(formatNumber(Math.floor(json.burnFee - json.burnNode)));
             $("#burnnode").text(formatNumber(json.burnNode));
@@ -124,12 +124,12 @@ block content
                 }
               }
             });
-            var roi_big = 1000000 / ((720 / json.inf_online_big) * 1752);
-            var roi_mid = 500000 / ((720 / json.inf_online_mid) * 838);
-            var roi_lil = 100000 / ((720 / json.inf_online_lil) * 160);
-            $("#n_big").text(json.inf_burnt_big + "/" + json.inf_online_big + " / ROI: " + Math.floor(roi_big) + " days");
-            $("#n_mid").text(json.inf_burnt_mid + "/" + json.inf_online_mid + " / ROI: " + Math.floor(roi_mid) + " days");
-            $("#n_lil").text(json.inf_burnt_lil + "/" + json.inf_online_lil + " / ROI: " + Math.floor(roi_lil) + " days");
+            var roi_big = (365 / (1000000 / ((720 / json.inf_online_big) * 1752)) - 1)*100;
+            var roi_mid = (365 / (500000 / ((720 / json.inf_online_mid) * 838)) - 1)*100;
+            var roi_lil = (365 / (100000 / ((720 / json.inf_online_lil) * 560)) - 1)*100;
+            $("#n_big").text(json.inf_burnt_big + "/" + json.inf_online_big + " / ROI: " + Math.floor(roi_big).toFixed(2) + " %");
+            $("#n_mid").text(json.inf_burnt_mid + "/" + json.inf_online_mid + " / ROI: " + Math.floor(roi_mid).toFixed(2) + " %");
+            $("#n_lil").text(json.inf_burnt_lil + "/" + json.inf_online_lil + " / ROI: " + Math.floor(roi_lil).toFixed(2) + " %");
             $("#n_totalnode").text(json.inf_online_big + json.inf_online_mid + json.inf_online_lil + " nodes");
           }});
           json = [];
