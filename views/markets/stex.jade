@@ -98,7 +98,7 @@ block market_view
                   td
                     =(parseFloat(order.quantity)*parseFloat(order.price)).toFixed(8)
                   td.hidden-xs
-                    =order.date
+                    =order.date.toISOString()
               else
                 tr.danger 
                   td.hidden-xs
@@ -110,5 +110,5 @@ block market_view
                   td
                     =(parseFloat(order.quantity)*parseFloat(order.price)).toFixed(8)
                   td.hidden-xs
-                    =order.date
+                    =order.date.toISOString()
       .footer-padding
