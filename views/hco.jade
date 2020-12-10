@@ -1,8 +1,16 @@
 extends layout
 block content
+    script(src='https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js')
+    script(src='https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js')
+    script(src='https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js')
     script.
       $(document).ready(function(){
         var rtable = $('#hco-table').dataTable( {
+          dom: 'Bfrtip',
+          buttons: [ 'copy', 'excel', 'csv', 'pdf' ],
           autoWidth: false,
           searching: true,
           ordering: true,
@@ -15,20 +23,34 @@ block content
               const data = [];
               for (var i = 0; i < json.data.length; i++) {
                 const line = {}
-                line['txid'] = json.data[i]['coinid'];
+                var lockTime = "0x";
+                var dataSize = parseInt(json.data[i]['script'].substring(0, 2));
+                for (var j=dataSize; j >= 1; j--) {
+                  lockTime = lockTime + json.data[i]['script'].substring(j*2, j*2 + 2);
+                }
+                line['txid'] = json.data[i]['coinid'].substring(0, 16);
                 line['receiver'] = json.data[i]['address'];
                 line['amount'] = json.data[i]['value'];
                 line['height'] = json.data[i]['height'];
-                line['mature'] = 0;
+                line['mature'] = parseInt(lockTime);
+                line['time'] = Math.round((parseInt(lockTime) - json.data[i]['height'])/720);
+                if (line['time'] == 90) line['interest'] = Math.round(line['amount'] * 0.03);
+                else if (line['time'] == 180) line['interest'] = Math.round(line['amount'] * 0.06);
+                else if (line['time'] == 360) line['interest'] = Math.round(line['amount'] * 0.15);
+                else line['interest'] = 0;
+                data.push(line)
               }
+              return data;
             }
           },
           columns: [
-            { data: 'txid', width: '45%'},
-            { data: 'receiver', width: '30%' },
-            { data: 'amount', width: '15%' },
-            { data: 'height', width: '5%' }, 
-            { data: 'mature', width: '5%' },
+            { data: 'txid', width: '15%'},
+            { data: 'receiver', width: '35%' },
+            { data: 'amount', width: '10%' },
+            { data: 'height', width: '10%' },
+            { data: 'mature', width: '10%' },
+            { data: 'time', width: '10%' },
+            { data: 'interest', width: '10%' },
           ]
         }); //end dataTable
       });
@@ -39,5 +61,7 @@ block content
                 th Receiver
                 th Amount
                 th Height
-                th Mature Height
+                th Mature
+                th Time
+                th Interest
 

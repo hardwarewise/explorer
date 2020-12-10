@@ -307,7 +307,7 @@ block content
          div(style='background-color: transparent;border-radius:10px;font-weight:bold;color:white;border:none !important;')#gaugeIncome
          br
        .col-md-6(style="margin-bottom: 4%; float: right; width: 48%;padding: 10px 10px 10px 10px;")
-        .row.text-center
+         .row.text-center
            link(rel='stylesheet', href='/stylesheets/assets/helpers/animate.css')
            link(rel='stylesheet', href='/stylesheets/assets/helpers/backgrounds.css')
            link(rel='stylesheet', href='/stylesheets/assets/helpers/boilerplate.css')
@@ -412,15 +412,14 @@ block content
                      item["MINI"] = ""+json.data[i].lil;
                      item["MID"] = ""+json.data[i].mid;
                      item["BIG"] = ""+json.data[i].big;
-                     if (item["location"] !=
+                     if (item["location"] != null && item["location"] != "") {
                        data.push(item)
                      }
                  }
                  createmap.update(data, "barchart");
                }})
              }, 4000);
-          
          .row.text-center
            center
-             div(style='width:350px;height:350px;margin:0px;b
+             div(style='width:350px;height:350px;margin:0px;background-color: transparent;border-radius:10px;font-weight:bold;color:white;border:none !important;')#pieChart
 
