@@ -112,7 +112,7 @@ app.use('/ext/coinsview/:hash', function(req,res){
       if (coins) {
         var balance_spendable = 0, balance_timelocked = 0;
           for(const coin of coins){
-				console.log(coin.spendable + " " +coin.spendHeight);
+            console.log(coin.spendable + " " +coin.spendHeight);
             if(coin.spendable == 1 && coin.spendHeight == 0 && coin.type != "checklocktimeverify"){
               balance_spendable = balance_spendable + parseFloat(coin.value);
 
@@ -198,9 +198,17 @@ app.use('/ext/nodelist', function(req,res){
   });
 });
 
+
+
 app.use('/ext/nodeexpire', function(req,res){
   db.get_node_expire(function(expire){
     res.send({data: expire});
+  });
+});
+
+app.use('/ext/hco/:height', function(req,res){
+  db.find_hco(req.params['height'],  function(coins){
+      res.send({height: req.params['height'], data: coins});
   });
 });
 
