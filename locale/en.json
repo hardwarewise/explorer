@@ -15,6 +15,7 @@
     "menu_network": "Network",
     "menu_poolstats": "Pool stats",
     "menu_infinitynodes": "InfinityNodes",
+    "menu_hco": "HCO",
 
     // explorer view
     "ex_title": "Block Explorer",

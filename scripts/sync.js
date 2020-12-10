@@ -27,6 +27,7 @@ function usage() {
   console.log('update       Updates index from last sync to current block');
   console.log('check        checks index for (and adds) any missing transactions/addresses');
   console.log('reindex      Clears index then resyncs from genesis to current block');
+  console.log('removespent  for coin database, remove spent coin');
   console.log('');
   console.log('notes:');
   console.log('* \'current block\' is the latest created block when script is executed.');
@@ -77,6 +78,9 @@ if (process.argv[2] == 'index') {
       break;
     case 'disconnect':
       mode = 'disconnect';
+      break;
+    case 'removespent':
+      mode = 'removespent';
       break;
     default:
       usage();
@@ -298,6 +302,12 @@ is_locked(function (exists) {
               } else if (mode == 'disconnect') {
                 console.log('disconnect coins of last block in stats');
                 db.delete_coin_lastStatsHeight(settings.coin, function(){
+                  console.log('coins deleted');
+                  exit();
+                });
+              } else if (mode == 'removespent') {
+                console.log('remove spent coins');
+                db.remove_spent_coin(settings.coin, function(){
                   console.log('coins deleted');
                   exit();
                 });

@@ -33,6 +33,7 @@ function  usage(){
   console.log('incomeBurnAddress     income from all burn address');
   console.log('totalBurnAddress      total burn from all special address');
   console.log('tx7days               number and amount of 7 previous days');
+  console.log('hco                   Hold Coin Offreing');
   console.log('');
   process.exit(0);
 }
@@ -372,6 +373,34 @@ mongoose.connect(dbString,{useNewUrlParser: true, useUnifiedTopology: true}, fun
           });
         };
         result();
+      });
+    } else if (statsName == 'hco') {
+      db.get_stats(settings.coin, function(stats){
+        db.find_hco(550000, function(coins){
+          console.log("HCO size: " + coins.length + " for coin: " + stats.coin);
+          var month3 = 0, month6 = 0, month12 = 0;
+          for (var i = 0; i < coins.length; i++) {
+            var lockTime = "0x";
+            var dataSize = parseInt(coins[i]['script'].substring(0, 2));
+            for (var j=dataSize; j >= 1; j--) {
+              lockTime = lockTime + coins[i]['script'].substring(j*2, j*2 + 2);
+            }
+            var lockdays = Math.round((parseInt(lockTime) - coins[i]['height'])/720);
+            if (lockdays == 90) month3 = month3 + Math.round(coins[i]['value']);
+            if (lockdays == 180) month6 = month6 + Math.round(coins[i]['value']);
+            if (lockdays == 360) month12 = month12 + Math.round(coins[i]['value']);
+          }
+          var total = month3 + month6 + month12;
+
+          Stats.updateOne({coin: settings.coin}, {
+            hco_3m: month3,
+            hco_6m: month6,
+            hco_12m: month12,
+          }, function() {
+            console.log("HCO 3 months: " + month3 + ", 6 months: " + month6 + ", 12 months: " + month12 + ", Total: " + total);
+            exit();
+          });
+        });
       });
     } else if (statsName == 'tx7days'){
       db.get_stats(settings.coin, function(stats){

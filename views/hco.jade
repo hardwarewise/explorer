@@ -1,0 +1,43 @@
+extends layout
+block content
+    script.
+      $(document).ready(function(){
+        var rtable = $('#hco-table').dataTable( {
+          autoWidth: false,
+          searching: true,
+          ordering: true,
+          //responsive: true,
+          lengthChange: false,
+          //processing: true,
+          ajax: {
+            url: '/ext/hco/550000',
+            dataSrc: function ( json ) {
+              const data = [];
+              for (var i = 0; i < json.data.length; i++) {
+                const line = {}
+                line['txid'] = json.data[i]['coinid'];
+                line['receiver'] = json.data[i]['address'];
+                line['amount'] = json.data[i]['value'];
+                line['height'] = json.data[i]['height'];
+                line['mature'] = 0;
+              }
+            }
+          },
+          columns: [
+            { data: 'txid', width: '45%'},
+            { data: 'receiver', width: '30%' },
+            { data: 'amount', width: '15%' },
+            { data: 'height', width: '5%' }, 
+            { data: 'mature', width: '5%' },
+          ]
+        }); //end dataTable
+      });
+    .col-xs-12.col-md-10.col-md-offset-1(style="margin-bottom: 5%")
+        table#hco-table.table.table-striped.table-bordered
+            thead
+                th TxID
+                th Receiver
+                th Amount
+                th Height
+                th Mature Height
+

@@ -50,6 +50,9 @@ var StatsSchema = new Schema({
   inf_online_big: { type: Number, default: 0 },
   inf_online_mid: { type: Number, default: 0 },
   inf_online_lil: { type: Number, default: 0 },
+  hco_3m: { type: Number, default: 0 },
+  hco_6m: { type: Number, default: 0 },
+  hco_12m: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('coinstats', StatsSchema);

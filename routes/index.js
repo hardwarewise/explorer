@@ -313,6 +313,9 @@ router.get('/summary', function(req, res) {
                                         payout_node_big: summarystats.data[0].payout_node_big,
                                         payout_node_mid: summarystats.data[0].payout_node_mid,
                                         payout_node_lil: summarystats.data[0].payout_node_lil,
+                                        hco_3m: summarystats.data[0].hco_3m,
+                                        hco_6m: summarystats.data[0].hco_6m,
+                                        hco_12m: summarystats.data[0].hco_12m,
 			});
 		}else{
 			res.send(summarystats);
@@ -431,7 +434,7 @@ router.get('/richlist', function(req, res) {
               distc: distribution.t_51_75,
               distd: distribution.t_76_100,
               diste: distribution.t_101_200,
-	      distf: distribution.t_201plus,
+              distf: distribution.t_201plus,
               show_dist: settings.richlist.distribution,
               show_received: settings.richlist.received,
               show_balance: settings.richlist.balance,
@@ -625,7 +628,10 @@ router.get('/ext/summary', function(req, res) {
                   payout_miner: income.payout_miner,
                   payout_node_big: income.payout_node_big,
                   payout_node_mid: income.payout_node_mid,
-                  payout_node_lil: income.payout_node_lil
+                  payout_node_lil: income.payout_node_lil,
+                  hco_3m: stats.hco_3m,
+                  hco_6m: stats.hco_6m,
+                  hco_12m: stats.hco_12m,
                 }]});
                });
               });
@@ -643,5 +649,9 @@ router.get('/pool-stats', function(req, res) {
 router.get('/infinitynodes', function(req, res) {
   const moment = require('moment');
   res.render('infinitynodes', {moment: moment});
+});
+
+router.get('/hco', function(req, res) {
+  res.render('hco', {});
 });
 module.exports = router;
