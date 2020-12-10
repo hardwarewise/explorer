@@ -36,10 +36,9 @@ block content
             var vTx=[Number.parseInt(json.tx_d6_value), Number.parseInt(json.tx_d5_value), Number.parseInt(json.tx_d4_value), 
                      Number.parseInt(json.tx_d3_value), Number.parseInt(json.tx_d2_value), Number.parseInt(json.tx_d1_value), Number.parseInt(json.tx_d0_value)];
             var ticks=["D-6", "D-5", "D-4", "D-3", "D-2", "D-1", "D"];
-
             $("#barTxStatsValue").text('');
             plot1 = $.jqplot('barTxStatsValue', [vTx], {
-                   title: 'Transaction values (SIN) per day',
+                   title: 'Transaction values ($SIN) per day',
                    seriesColors:['silver'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
@@ -124,6 +123,38 @@ block content
                 }
               }
             });
+            $("#pieChart").text('');
+            var dataHCO = [
+              ['3 months',json.hco_3m], ['6 months',json.hco_6m], ['12 months',json.hco_12m]
+            ];
+            var totalHCO = json.hco_3m + json.hco_6m + json.hco_12m;
+            var HCO = $.jqplot('pieChart', [dataHCO],
+              {
+                 title: 'Hold Coin Offering: ' + totalHCO + ' $SIN',
+                 grid: {background: 'transparent'},
+                 seriesColors: [ "#FF0000", "#FF8000", "#FFBF00"],
+                 series: [{
+                   renderer: $.jqplot.PieRenderer,
+                   rendererOptions: {
+                     dataLabels: [json.hco_3m, json.hco_6m, json.hco_12m],
+                     diameter: 200,
+                     padding: 0,
+                     sliceMargin: 4,
+                     startAngle: -90,
+                     showDataLabels: true,
+                   }
+                 }],
+                 grid: {borderWidth:0, shadow:false},
+                 legend: {
+                    show: true, placement: "outsideGrid",
+                    rendererOptions: {
+                      numberRows: 2,
+                      border: 'none'
+                    },
+                    location: 's'
+                 }
+              }
+            );
             var roi_big = (365 / (1000000 / ((720 / json.inf_online_big) * 1752)) - 1)*100;
             var roi_mid = (365 / (500000 / ((720 / json.inf_online_mid) * 838)) - 1)*100;
             var roi_lil = (365 / (100000 / ((720 / json.inf_online_lil) * 560)) - 1)*100;
@@ -307,11 +338,10 @@ block content
            br
            br
            br
-           br
-           br
-           br
-           br           
            div.row(id="mapcontainer" align="center" style="background-color: transparent ;border-radius:10px;font-weight:bold;color:white;border:none !important;")
+             h1 Decentralized Data Center
+             br
+             br
            link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
            script(src='/javascripts/worldmap.v1.js')
            script(src='/javascripts/jqplot.pointLabels.js')
@@ -378,13 +408,19 @@ block content
                  for (var i = 0; i < keys.length; i++) {
                    if (json.data[i].location == "SG") json.data[i].location = "MY";
                    const item = {};
-                     item["location"] = json.data[i].location,
-                     item["MINI"] = ""+json.data[i].lil,
-                     item["MID"] = ""+json.data[i].mid,
-                     item["BIG"] = ""+json.data[i].big,
-                   data.push(item)
+                     item["location"] = json.data[i].location;
+                     item["MINI"] = ""+json.data[i].lil;
+                     item["MID"] = ""+json.data[i].mid;
+                     item["BIG"] = ""+json.data[i].big;
+                     if (item["location"] !=
+                       data.push(item)
+                     }
                  }
                  createmap.update(data, "barchart");
                }})
              }, 4000);
           
+         .row.text-center
+           center
+             div(style='width:350px;height:350px;margin:0px;b
+

@@ -106,7 +106,7 @@ html
             if settings.display.markets == true
               li#markets
                 a.navbar-link.loading(href='/markets/#{settings.markets.default}')
-                  span.glyphicon.glyphicon-piggy-bank
+                  span.glyphicon.glyphicon-signal
                   span.menu-text #{settings.locale.menu_markets}
             if settings.display.api == true
               li#info
@@ -118,12 +118,18 @@ html
                 a.navbar-link(href='/pool-stats')
                   span.glyphicon.glyphicon-stats
                   span.menu-text #{settings.locale.menu_poolstats}
+            if settings.display.hco == true
+               li#info
+                a.navbar-link(href='/hco')
+                  span.glyphicon.glyphicon-piggy-bank
+                  span.menu-text #{settings.locale.menu_hco}
             if settings.display.infinitynodes == true
               li#info
                 a.navbar-link(href='/infinitynodes')
                   span.glyphicon.glyphicon-list-alt
                   span.menu-text #{settings.locale.menu_infinitynodes}
-        .collapse.navbar-collapse(id='navbar-collapse' style='float:left;width:600px;padding-left: 50px')
+      .container-fluid
+        .collapse.navbar-collapse(id='navbar-collapse' style='float:right; width: 600px;padding-left: 50px')
             .search(style='align:center;margin-top:5px;margin-bottom: 5px;')
               form.form-inline(method='post', action='/search')
                 #index-search.form-group
