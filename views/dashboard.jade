@@ -125,7 +125,7 @@ block content
             });
             $("#pieChart").text('');
             var dataHCO = [
-              ['3 months',json.hco_3m], ['6 months',json.hco_6m], ['12 months',json.hco_12m]
+              ['3 months (+3%)',json.hco_3m], ['6 months (+6%)',json.hco_6m], ['12 months (+15%)',json.hco_12m]
             ];
             var totalHCO = json.hco_3m + json.hco_6m + json.hco_12m;
             var HCO = $.jqplot('pieChart', [dataHCO],
