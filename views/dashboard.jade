@@ -59,7 +59,7 @@ block content
             $("#barTxStatsNumber").text('');
             plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
-                   seriesColors:['#BB9038'],
+                   seriesColors:['#0FADB9'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
@@ -119,7 +119,7 @@ block content
                     max: 200,
                     background: '#011567',
                     intervals:[50, 100, 150, 200],
-                    intervalColors:['#00FF00', '#228B22', '#BB9038', '#F5332F']
+                    intervalColors:['#2E3191', '#0FADB9', '#CDAD0E', '#A56736']
                 }
               }
             });
@@ -132,7 +132,7 @@ block content
               {
                  title: 'HODL Coin Offering: ' + totalHCO + ' $SIN',
                  grid: {background: 'transparent'},
-                 seriesColors: [ "#FF0000", "#FF8000", "#FFBF00"],
+                 seriesColors: [ "#0FADB9", "#A56736", "#2E3191"],
                  series: [{
                    renderer: $.jqplot.PieRenderer,
                    rendererOptions: {
