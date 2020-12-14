@@ -59,7 +59,7 @@ block content
             $("#barTxStatsNumber").text('');
             plot3 = $.jqplot('barTxStatsNumber', [nTx], {
                    title: 'Transactions per day',
-                   seriesColors:['#0FADB9'],
+                   seriesColors:['#2E3191'],
                    grid: {drawGridlines: false, borderColor: 'transparent', shadow: false, drawBorder: false, shadowColor: 'transparent'},
                    seriesDefaults: {
                      renderer:$.jqplot.BarRenderer
@@ -149,7 +149,8 @@ block content
                     show: true, placement: "outsideGrid",
                     rendererOptions: {
                       numberRows: 2,
-                      border: 'none'
+                      border: 'none',
+                      background: 'transparent'
                     },
                     location: 's'
                  }
@@ -339,7 +340,7 @@ block content
            br
            br
            div.row(id="mapcontainer" align="center" style="background-color: transparent ;border-radius:10px;font-weight:bold;color:white;border:none !important;")
-             h1 Decentralized Data Center
+             h1 <b>Decentralized Data Center</b>
              br
              br
            link(rel='stylesheet', href='/stylesheets/worldmap.v1.css')
