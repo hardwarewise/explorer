@@ -23,7 +23,7 @@
     "markdown-js": "0.0.3",
     "moment": "^2.24.0",
     "mongodb": "^3.4.1",
-    "mongoose": "^5.8.3",
+    "mongoose": "^5.12.0",
     "morgan": "^1.9.1",
     "nan": "^2.14.0",
     "node-cache": "^4.2.0",
